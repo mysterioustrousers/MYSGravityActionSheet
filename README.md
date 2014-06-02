@@ -7,8 +7,6 @@ An action sheet that uses UIKit Dynamics to present buttons in a playful, intere
 
 To run the example project; clone the repo, and run `pod install` from the Example directory first.
 
-## Requirements
-
 ## Installation
 
 MYSGravityActionSheet is available through [CocoaPods](http://cocoapods.org). To install
