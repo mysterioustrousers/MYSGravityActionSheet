@@ -1,0 +1,17 @@
+PODS:
+  - MYSGravityActionSheet (0.0.1):
+    - PREBorderView (~> 1.0)
+  - PREBorderView (1.0.0)
+
+DEPENDENCIES:
+  - MYSGravityActionSheet (from `../`)
+
+EXTERNAL SOURCES:
+  MYSGravityActionSheet:
+    :path: ../
+
+SPEC CHECKSUMS:
+  MYSGravityActionSheet: e9b25411f59d706de42c2c921244aaabbd3a8222
+  PREBorderView: b1df606c977a0406df259488609227edb4b07140
+
+COCOAPODS: 0.33.1
