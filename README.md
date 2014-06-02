@@ -1,4 +1,7 @@
-# MYSGravityActionSheet
+MYSGravityActionSheet
+=====================
+
+An action sheet that uses UIKit Dynamics to present buttons in a playful, interesting way.
 
 ## Usage
 
@@ -12,5 +15,3 @@ MYSGravityActionSheet is available through [CocoaPods](http://cocoapods.org). To
 it, simply add the following line to your Podfile:
 
     pod "MYSGravityActionSheet"
-
-
