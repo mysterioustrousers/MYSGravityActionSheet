@@ -13,16 +13,16 @@ typedef void (^ActionBlock)();
 
 @interface MYSGravityActionSheet ()
 @property (nonatomic, strong) UIDynamicAnimator   *animator;
-@property (nonatomic, strong) UICollisionBehavior *collision;
 @property (nonatomic, strong) NSMutableArray      *buttons;
 @property (nonatomic, strong) NSArray             *reversedButtons;
 @property (nonatomic, strong) NSMutableArray      *buttonTitles;
 @property (nonatomic, retain) NSMutableDictionary *buttonBlockDictionary;
-@property (           assign) int                 padding;
-@property (           assign) int                 paddingBottom;
-@property (           assign) int                 buttonHeight;
-@property (           assign) CGFloat             magnitude;
-@property (           assign) CGFloat             elasticity;
+@property (nonatomic, assign) int                 padding;
+@property (nonatomic, assign) int                 paddingBottom;
+@property (nonatomic, assign) int                 buttonHeight;
+@property (nonatomic, assign) CGFloat             magnitude;
+@property (nonatomic, assign) CGFloat             elasticity;
+@property (nonatomic, assign) CGFloat             resistance;
 @end
 
 
@@ -32,21 +32,20 @@ typedef void (^ActionBlock)();
 - (void)showInView:(UIView *)view
 {
     // pre-animation configuration
-    self.padding = 10;
-    self.paddingBottom = 10;
-    self.buttonHeight = 50;
-    self.magnitude = 2.5;
-    self.elasticity = 0.84;
-    self.frame = view.bounds;
-    
+    self.padding        = 10;
+    self.paddingBottom  = 10;
+    self.buttonHeight   = 50;
+    self.magnitude      = 3.0;
+    self.elasticity     = 0.55;
+    self.resistance     = 0.4;  // before items leave the screen upwards, resistance is applied iteratively to each item.
+                                // item 0 (top) = 0; item 1 = resistance; item 2 = 2 * resistance;
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapped:)];
     [self addGestureRecognizer:tap];
-    
     [view addSubview:self];
+    
     UIView *selfView = self;
     self.translatesAutoresizingMaskIntoConstraints = NO;
-    
     [view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[selfView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(selfView)]];
     [view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[selfView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(selfView)]];
     
@@ -55,7 +54,6 @@ typedef void (^ActionBlock)();
     [UIView animateWithDuration:0.5 animations:^{
         self.backgroundColor =[UIColor colorWithWhite:0.0 alpha:0.4];
     }];
-    //[self viewDidLayoutSubviews];
 }
 
 
@@ -63,8 +61,9 @@ typedef void (^ActionBlock)();
 {
     CGRect bounds = self.bounds;
    
-    // Reverse the buttons so they layout more naturally
-    self.reversedButtons = [[self.buttons reverseObjectEnumerator] allObjects];
+    // Reverse the buttons so they layout more naturally (the opposite order they are added)
+    if (self.reversedButtons == nil)
+        self.reversedButtons = [[self.buttons reverseObjectEnumerator] allObjects];
 
     for (int i = 0; i < self.buttons.count; i++) {
         UIButton *button = [self.reversedButtons objectAtIndex:i];
@@ -105,14 +104,23 @@ typedef void (^ActionBlock)();
 
 - (void)dismiss
 {
-    [self.collision removeAllBoundaries];
-    for (int i = 0; i < self.reversedButtons.count; i++) {
-        
-        UIButton *button = [self.reversedButtons objectAtIndex:i];
-        [self pushView:button vector:CGVectorMake(0, (i + 1) * -0.5)];
+    for (UIDynamicBehavior *behavior in self.animator.behaviors) {
+        if ([behavior isKindOfClass:[UIGravityBehavior class]])
+            [self.animator removeBehavior:behavior];
+        else if ([behavior isKindOfClass:[UICollisionBehavior class]])
+            [((UICollisionBehavior *)behavior) removeAllBoundaries]; // so items don't get stuck on walls
     }
     
-    [UIView animateWithDuration:self.buttons.count * 0.1
+    [self addGravityOnItems:self.reversedButtons magnitude:-1 * self.magnitude animator:self.animator];
+    
+    for (int i = 0; i < self.reversedButtons.count; i++) {
+        UIButton *button = self.buttons[i];
+        UIDynamicItemBehavior *behavior = [[UIDynamicItemBehavior alloc] initWithItems:@[button]];
+        behavior.resistance = i * self.resistance;
+        [self.animator addBehavior:behavior];
+    }
+    
+    [UIView animateWithDuration:self.buttons.count * 0.11
                      animations:^{
                          self.backgroundColor =[UIColor clearColor]; }
                      completion:^(BOOL finished){
@@ -123,15 +131,15 @@ typedef void (^ActionBlock)();
 
 
 
-# pragma mark - private
 
+# pragma mark - private
 
 - (void)buttonWasTapped:(UIButton *)button
 {
-    NSString *key = button.titleLabel.text;
-    ActionBlock block = self.buttonBlockDictionary[key];
+    NSString *key       = button.titleLabel.text;
+    ActionBlock block   = self.buttonBlockDictionary[key];
     if (block) block();
-    [self dismiss];
+    [self dismiss]; // always dismiss
 }
 
 - (void)roundCorner:(UIView *)view corners:(UIRectCorner)corners
@@ -141,15 +149,15 @@ typedef void (^ActionBlock)();
                                      byRoundingCorners: corners
                                            cornerRadii:CGSizeMake(5.0, 5.0)];
     CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
-    maskLayer.frame = view.bounds;
-    maskLayer.path = maskPath.CGPath;
-    view.layer.mask = maskLayer;
+    maskLayer.frame         = view.bounds;
+    maskLayer.path          = maskPath.CGPath;
+    view.layer.mask         = maskLayer;
 }
 
 - (void)pushView:(UIView *)view vector:(CGVector)vector
 {
-    UIPushBehavior *push = [[UIPushBehavior alloc] initWithItems:@[view] mode:UIPushBehaviorModeInstantaneous];
-    push.pushDirection = vector;
+    UIPushBehavior *push    = [[UIPushBehavior alloc] initWithItems:@[view] mode:UIPushBehaviorModeInstantaneous];
+    push.pushDirection      = vector;
     [self.animator addBehavior:push];
 }
 
@@ -164,7 +172,6 @@ typedef void (^ActionBlock)();
     NSArray *items = self.reversedButtons;
     
     self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self];
-    
     [self addGravityOnItems:items magnitude:self.magnitude animator:self.animator];
     [self addCollisionOnItems:items animator:self.animator];
     
@@ -174,39 +181,38 @@ typedef void (^ActionBlock)();
     }
 
     // Make 'em bounce
-    UIDynamicItemBehavior* itemBehaviour = [[UIDynamicItemBehavior alloc] initWithItems:items];
-    itemBehaviour.elasticity = self.elasticity;
-    itemBehaviour.allowsRotation = NO;
+    UIDynamicItemBehavior* itemBehaviour    = [[UIDynamicItemBehavior alloc] initWithItems:items];
+    itemBehaviour.elasticity                = self.elasticity;
+    itemBehaviour.allowsRotation            = NO;
     [self.animator addBehavior:itemBehaviour];
 }
 
 - (void)addGravityOnItems:(NSArray *)items magnitude:(CGFloat)magnitude animator:(UIDynamicAnimator *)animator
 {
-    UIGravityBehavior *gravity = [[UIGravityBehavior alloc] initWithItems: items];
-    gravity.magnitude = magnitude;
+    UIGravityBehavior *gravity  = [[UIGravityBehavior alloc] initWithItems: items];
+    gravity.magnitude           = magnitude;
     
     [animator addBehavior:gravity];
 }
 
 - (void)addCollisionOnItems:(NSArray *)items animator:(UIDynamicAnimator *)animator
 {
-    CGRect bounds = self.bounds;
-    self.collision = [[UICollisionBehavior alloc] initWithItems: items];
-    [self.collision addBoundaryWithIdentifier:@"floor"
-                          fromPoint:CGPointMake(0,bounds.size.height - self.paddingBottom)
-                            toPoint:CGPointMake(bounds.size.width,
-                                                bounds.size.height)];
+    CGRect bounds   = self.bounds;
+    UICollisionBehavior *collision  = [[UICollisionBehavior alloc] initWithItems: items];
+    [collision addBoundaryWithIdentifier:@"floor"
+                                    fromPoint:CGPointMake(0,bounds.size.height - self.paddingBottom)
+                                      toPoint:CGPointMake(bounds.size.width,
+                                                          bounds.size.height)];
     double offset = -0.1;
-    [self.collision addBoundaryWithIdentifier:@"leftside"
-                          fromPoint:CGPointMake(self.padding + offset,0)
-                            toPoint:CGPointMake(self.padding + offset,
-                                                bounds.size.height)];
-    [self.collision addBoundaryWithIdentifier:@"rightside"
-                          fromPoint:CGPointMake(bounds.size.width - self.padding + offset, 0)
-                            toPoint:CGPointMake(bounds.size.width - self.padding + offset,
-                                                bounds.size.height)];
-    [animator addBehavior:self.collision];
-    
+    [collision addBoundaryWithIdentifier:@"leftside"
+                                    fromPoint:CGPointMake(self.padding + offset,0)
+                                      toPoint:CGPointMake(self.padding + offset,
+                                                          bounds.size.height)];
+    [collision addBoundaryWithIdentifier:@"rightside"
+                                    fromPoint:CGPointMake(bounds.size.width - self.padding + offset, 0)
+                                      toPoint:CGPointMake(bounds.size.width - self.padding + offset,
+                                                          bounds.size.height)];
+    [animator addBehavior:collision];
 }
 
 @end
