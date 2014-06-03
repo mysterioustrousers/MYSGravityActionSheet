@@ -11,7 +11,7 @@
 
 typedef void (^ActionBlock)();
 
-@interface MYSGravityActionSheet () <UIPopoverControllerDelegate>
+@interface MYSGravityActionSheet ()
 @property (nonatomic, strong) UIDynamicAnimator   *animator;
 @property (nonatomic, strong) NSMutableArray      *buttons;
 @property (nonatomic, strong) NSArray             *reversedButtons;
@@ -37,7 +37,6 @@ typedef void (^ActionBlock)();
     if (_popover == nil && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         UIViewController *viewController = [UIViewController new];
         _popover = [[UIPopoverController alloc] initWithContentViewController:viewController];
-        _popover.delegate = self;
         [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     }
     return _popover;
@@ -52,9 +51,8 @@ typedef void (^ActionBlock)();
 
 - (void)showFromView:(UIView *)fromView inView:(UIView *)inView animated:(BOOL)animated
 {
-    self.presentFromView = fromView;
-    self.presentInView = inView;
-    self.popover.delegate = self;
+    self.presentFromView    = fromView;
+    self.presentInView      = inView;
     [self.popover presentPopoverFromRect:fromView.frame inView:inView permittedArrowDirections:UIPopoverArrowDirectionAny animated:animated];
     [self showInView:self.popover.contentViewController.view];
     [self adjustPopoverLayout];
@@ -62,10 +60,9 @@ typedef void (^ActionBlock)();
 
 - (void)adjustPopoverLayout
 {
-    CGRect frame = self.popover.contentViewController.view.frame;
-    double overlapAdjust = self.buttons.count > 7 ? 0.15 : 0.25; // the buttons overlap and aren't quite their original size...
-    
-    frame.size.height = self.buttons.count * (self.buttonHeight - self.buttons.count * overlapAdjust) + self.paddingBottom * 2;
+    CGRect frame            = self.popover.contentViewController.view.frame;
+    double overlapAdjust    = self.buttons.count > 7 ? 0.15 : 0.25; // the buttons overlap and aren't quite their original size...
+    frame.size.height       = self.buttons.count * (self.buttonHeight - self.buttons.count * overlapAdjust) + self.paddingBottom * 2;
     
     [self.popover setPopoverContentSize:frame.size animated:NO];
     [self setFrame:frame];
