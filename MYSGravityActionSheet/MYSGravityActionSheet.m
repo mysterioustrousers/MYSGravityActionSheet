@@ -145,6 +145,8 @@ typedef void (^ActionBlock)();
     NSInteger buttonIndex = [self.buttons indexOfObject:button];
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        UIGravityBehavior *gravityBehavior = [[UIGravityBehavior alloc] init];
+        gravityBehavior.magnitude = self.magnitude;
         [self.buttons enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (idx < buttonIndex) {
@@ -153,14 +155,12 @@ typedef void (^ActionBlock)();
                     [self.animator addBehavior:pushBehavior];
                 }
                 else if (idx > buttonIndex) {
-                    UIGravityBehavior *gravityBehavior = [[UIGravityBehavior alloc] initWithItems:@[obj]];
-                    gravityBehavior.magnitude = self.magnitude;
+                    [gravityBehavior addItem:obj];
                     [self.animator addBehavior:gravityBehavior];
                 }
                 else if (idx == buttonIndex){
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                        UIGravityBehavior *gravityBehavior = [[UIGravityBehavior alloc] initWithItems:@[obj]];
-                        gravityBehavior.magnitude = self.magnitude;
+                        [gravityBehavior addItem:obj];
                         [self.animator addBehavior:gravityBehavior];
                     });
                 }
@@ -168,15 +168,6 @@ typedef void (^ActionBlock)();
             [NSThread sleepForTimeInterval:0.02];
         }];
     });
-
-//    [self addGravityOnItems:self.reversedButtons magnitude:-2 * self.magnitude];
-
-//    for (int i = 0; i < self.reversedButtons.count; i++) {
-//        UIButton *button = self.buttons[i];
-//        UIDynamicItemBehavior *behavior = [[UIDynamicItemBehavior alloc] initWithItems:@[button]];
-//        behavior.resistance = i * self.resistance;
-//        [self.animator addBehavior:behavior];
-//    }
 
     if (self.popover != nil) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.buttons.count * 0.04 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
