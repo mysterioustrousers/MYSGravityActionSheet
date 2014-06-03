@@ -22,7 +22,7 @@ typedef void (^ActionBlock)();
 @property (nonatomic, assign) int                 buttonHeight;
 @property (nonatomic, assign) CGFloat             magnitude;
 @property (nonatomic, assign) CGFloat             elasticity;
-@property (nonatomic, assign) CGFloat             resistance;
+@property (nonatomic, assign) CGFloat             force;
 @property (nonatomic, strong) UIPopoverController *popover;
 @end
 
@@ -51,12 +51,12 @@ typedef void (^ActionBlock)();
 - (void)showInView:(UIView *)view
 {
     // pre-animation configuration
-    self.padding        = 10;
-    self.paddingBottom  = 10;
-    self.buttonHeight   = 50;
-    self.magnitude      = 3.0;
-    self.elasticity     = 0.55;
-    self.resistance     = 0.4;  // before items leave the screen upwards, resistance is applied iteratively to each item.
+    self.padding       = 10;
+    self.paddingBottom = 10;
+    self.buttonHeight  = 50;
+    self.magnitude     = 3.0;
+    self.elasticity    = 0.55;
+    self.force         = -100;      // before items leave the screen upwards, resistance is applied iteratively to each item.
                                 // item 0 (top) = 0; item 1 = resistance; item 2 = 2 * resistance;
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapped:)];
@@ -130,35 +130,67 @@ typedef void (^ActionBlock)();
 
 - (void)dismiss
 {
+    [self dismissWithButton:nil];
+}
+
+- (void)dismissWithButton:(UIButton *)button
+{
     for (UIDynamicBehavior *behavior in self.animator.behaviors) {
         if ([behavior isKindOfClass:[UIGravityBehavior class]])
             [self.animator removeBehavior:behavior];
         else if ([behavior isKindOfClass:[UICollisionBehavior class]])
             [((UICollisionBehavior *)behavior) removeAllBoundaries]; // so items don't get stuck on walls
     }
-    
-    [self addGravityOnItems:self.reversedButtons magnitude:-1 * self.magnitude animator:self.animator];
-    
-    for (int i = 0; i < self.reversedButtons.count; i++) {
-        UIButton *button = self.buttons[i];
-        UIDynamicItemBehavior *behavior = [[UIDynamicItemBehavior alloc] initWithItems:@[button]];
-        behavior.resistance = i * self.resistance;
-        [self.animator addBehavior:behavior];
-    }
-    
+
+    NSInteger buttonIndex = [self.buttons indexOfObject:button];
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self.buttons enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (idx < buttonIndex) {
+                    UIPushBehavior *pushBehavior = [[UIPushBehavior alloc] initWithItems:@[obj] mode:UIPushBehaviorModeContinuous];
+                    pushBehavior.pushDirection = CGVectorMake(0, self.force);
+                    [self.animator addBehavior:pushBehavior];
+                }
+                else if (idx > buttonIndex) {
+                    UIGravityBehavior *gravityBehavior = [[UIGravityBehavior alloc] initWithItems:@[obj]];
+                    gravityBehavior.magnitude = self.magnitude;
+                    [self.animator addBehavior:gravityBehavior];
+                }
+                else if (idx == buttonIndex){
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        UIGravityBehavior *gravityBehavior = [[UIGravityBehavior alloc] initWithItems:@[obj]];
+                        gravityBehavior.magnitude = self.magnitude;
+                        [self.animator addBehavior:gravityBehavior];
+                    });
+                }
+            });
+            [NSThread sleepForTimeInterval:0.02];
+        }];
+    });
+
+//    [self addGravityOnItems:self.reversedButtons magnitude:-2 * self.magnitude];
+
+//    for (int i = 0; i < self.reversedButtons.count; i++) {
+//        UIButton *button = self.buttons[i];
+//        UIDynamicItemBehavior *behavior = [[UIDynamicItemBehavior alloc] initWithItems:@[button]];
+//        behavior.resistance = i * self.resistance;
+//        [self.animator addBehavior:behavior];
+//    }
+
     if (self.popover != nil) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.buttons.count * 0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.popover dismissPopoverAnimated:YES];
-        self.popover = nil;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.buttons.count * 0.04 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.popover dismissPopoverAnimated:YES];
+            self.popover = nil;
         });
     }
-        [UIView animateWithDuration:self.buttons.count * 0.11
-                         animations:^{
-                             self.backgroundColor   = [UIColor clearColor]; }
-                         completion:^(BOOL finished){
-                             [self removeFromSuperview];
-                             
-                         }];
+    [UIView animateWithDuration:self.buttons.count * 0.15
+                     animations:^{
+                         self.backgroundColor   = [UIColor clearColor]; }
+                     completion:^(BOOL finished){
+                         [self removeFromSuperview];
+
+                     }];
 }
 
 
@@ -172,7 +204,7 @@ typedef void (^ActionBlock)();
     NSString *key       = button.titleLabel.text;
     ActionBlock block   = self.buttonBlockDictionary[key];
     if (block) block();
-    [self dismiss]; // always dismiss
+    [self dismissWithButton:button]; // always dismiss
 }
 
 - (void)roundCorner:(UIView *)view corners:(UIRectCorner)corners
@@ -205,7 +237,7 @@ typedef void (^ActionBlock)();
     NSArray *items = self.reversedButtons;
     
     self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self];
-    [self addGravityOnItems:items magnitude:self.magnitude animator:self.animator];
+    [self addGravityOnItems:items magnitude:self.magnitude];
     [self addCollisionOnItems:items animator:self.animator];
     
     for (int i = 0; i < self.buttons.count; i++) { // separate the buttons a bit by pushing them each a little differently
@@ -220,12 +252,11 @@ typedef void (^ActionBlock)();
     [self.animator addBehavior:itemBehaviour];
 }
 
-- (void)addGravityOnItems:(NSArray *)items magnitude:(CGFloat)magnitude animator:(UIDynamicAnimator *)animator
+- (void)addGravityOnItems:(NSArray *)items magnitude:(CGFloat)magnitude
 {
     UIGravityBehavior *gravity  = [[UIGravityBehavior alloc] initWithItems: items];
     gravity.magnitude           = magnitude;
-    
-    [animator addBehavior:gravity];
+    [self.animator addBehavior:gravity];
 }
 
 - (void)addCollisionOnItems:(NSArray *)items animator:(UIDynamicAnimator *)animator
