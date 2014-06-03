@@ -16,10 +16,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Ok-Uh-JoR">
-                                <rect key="frame" x="284" y="497" width="200" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Ok-Uh-JoR">
+                                <rect key="frame" x="20" y="275" width="200" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="qe2-Yr-ClA"/>
+                                </constraints>
                                 <state key="normal" title="Change Background">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -27,8 +30,26 @@
                                     <action selector="changeBackgroundWasTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tsJ-Sc-bIq"/>
                                 </connections>
                             </button>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="15e-lm-aN2">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem title="Item" id="a9d-4A-u00">
+                                        <connections>
+                                            <action selector="barButtonWasTapped:" destination="BYZ-38-t0r" id="uLZ-HM-t5a"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="15e-lm-aN2" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="WVZ-ea-8mw"/>
+                            <constraint firstItem="3Ok-Uh-JoR" firstAttribute="centerX" secondItem="15e-lm-aN2" secondAttribute="centerX" constant="-264" id="fop-r4-3zd"/>
+                            <constraint firstAttribute="trailing" secondItem="15e-lm-aN2" secondAttribute="trailing" id="obo-y3-SQ0"/>
+                            <constraint firstItem="15e-lm-aN2" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="tLW-ni-lxx"/>
+                            <constraint firstItem="3Ok-Uh-JoR" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-222" id="vtD-5B-jR0"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="changeBackgroundButton" destination="3Ok-Uh-JoR" id="dy5-kF-O2P"/>

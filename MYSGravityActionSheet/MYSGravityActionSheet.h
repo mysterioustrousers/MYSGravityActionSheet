@@ -10,10 +10,13 @@
 
 @interface MYSGravityActionSheet : UIView
 
+- (void)addButtonWithTitle:(NSString *)title block:(void (^)(void))block;
 - (void)dismiss;
 - (void)showInView:(UIView *)view;
-- (void)showFromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated; // iPad
-- (void)addButtonWithTitle:(NSString *)title block:(void (^)(void))block;
+// iPad
+- (void)showFromView:(UIView *)fromView inView:(UIView *)inView animated:(BOOL)animated;
+- (void)showFromBarButtonItem:(UIBarButtonItem *)item inView:(UIView *)view animated:(BOOL)animated;
+
 
 /*
 // Adds a cancel button. Use only once.

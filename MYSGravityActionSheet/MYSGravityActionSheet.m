@@ -24,28 +24,48 @@ typedef void (^ActionBlock)();
 @property (nonatomic, assign) CGFloat             elasticity;
 @property (nonatomic, assign) CGFloat             force;
 @property (nonatomic, strong) UIPopoverController *popover;
+@property (nonatomic, weak  ) UIView              *presentInView;
+@property (nonatomic, weak  ) UIView              *presentFromView;
 @end
 
 
 @implementation MYSGravityActionSheet
 
 
-- (void)showFromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated
+- (UIPopoverController *)popover
 {
-    if (self.popover == nil) {
-        //The color picker popover is not showing. Show it.
+    if (_popover == nil && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         UIViewController *viewController = [UIViewController new];
-        self.popover = [[UIPopoverController alloc] initWithContentViewController:viewController];
-        [self.popover presentPopoverFromRect:rect inView:view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        
-       [self showInView:viewController.view];
-        CGRect frame = self.popover.contentViewController.view.frame;
-        frame.size.height = self.buttons.count * self.buttonHeight + self.padding;
-        
-        [self.popover setPopoverContentSize:frame.size animated:NO];
-        [self setFrame:frame];
-        //self.popover.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.4];
+        _popover = [[UIPopoverController alloc] initWithContentViewController:viewController];
+        [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     }
+    return _popover;
+}
+
+- (void)showFromBarButtonItem:(UIBarButtonItem *)item inView:(UIView *)view animated:(BOOL)animated
+{
+    [self.popover presentPopoverFromBarButtonItem:item permittedArrowDirections:UIPopoverArrowDirectionAny animated:animated];
+    [self showInView:self.popover.contentViewController.view];
+    [self adjustPopoverLayout];
+}
+
+- (void)showFromView:(UIView *)fromView inView:(UIView *)inView animated:(BOOL)animated
+{
+    self.presentFromView    = fromView;
+    self.presentInView      = inView;
+    [self.popover presentPopoverFromRect:fromView.frame inView:inView permittedArrowDirections:UIPopoverArrowDirectionAny animated:animated];
+    [self showInView:self.popover.contentViewController.view];
+    [self adjustPopoverLayout];
+}
+
+- (void)adjustPopoverLayout
+{
+    CGRect frame            = self.popover.contentViewController.view.frame;
+    double overlapAdjust    = self.buttons.count > 7 ? 0.15 : 0.25; // the buttons overlap and aren't quite their original size...
+    frame.size.height       = self.buttons.count * (self.buttonHeight - self.buttons.count * overlapAdjust) + self.paddingBottom * 2;
+    
+    [self.popover setPopoverContentSize:frame.size animated:NO];
+    [self setFrame:frame];
 }
 
 - (void)showInView:(UIView *)view
@@ -56,12 +76,14 @@ typedef void (^ActionBlock)();
     self.buttonHeight  = 50;
     self.magnitude     = 3.0;
     self.elasticity    = 0.55;
-    self.force         = -100;      // before items leave the screen upwards, resistance is applied iteratively to each item.
-                                // item 0 (top) = 0; item 1 = resistance; item 2 = 2 * resistance;
+    self.force         = -100; // applies force to items above selected item
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapped:)];
     [self addGestureRecognizer:tap];
-    [view addSubview:self];
+    if(![self isDescendantOfView: view]) {
+        [view addSubview:self];
+        [self setNeedsLayout];
+    }
     
     UIView *selfView = self;
     self.translatesAutoresizingMaskIntoConstraints = NO;
@@ -75,13 +97,15 @@ typedef void (^ActionBlock)();
             self.backgroundColor =[UIColor colorWithWhite:0.0 alpha:0.4];
         }];
     }
+    else {
+        [self startOrientationObserving];
+    }
 }
-
 
 - (void)layoutSubviews
 {
     CGRect bounds = self.bounds;
-   
+
     // Reverse the buttons so they layout more naturally (the opposite order they are added)
     if (self.reversedButtons == nil)
         self.reversedButtons = [[self.buttons reverseObjectEnumerator] allObjects];
@@ -145,6 +169,8 @@ typedef void (^ActionBlock)();
     NSInteger buttonIndex = [self.buttons indexOfObject:button];
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        UIGravityBehavior *gravityBehavior = [[UIGravityBehavior alloc] init];
+        gravityBehavior.magnitude = self.magnitude;
         [self.buttons enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (idx < buttonIndex) {
@@ -153,14 +179,12 @@ typedef void (^ActionBlock)();
                     [self.animator addBehavior:pushBehavior];
                 }
                 else if (idx > buttonIndex) {
-                    UIGravityBehavior *gravityBehavior = [[UIGravityBehavior alloc] initWithItems:@[obj]];
-                    gravityBehavior.magnitude = self.magnitude;
+                    [gravityBehavior addItem:obj];
                     [self.animator addBehavior:gravityBehavior];
                 }
                 else if (idx == buttonIndex){
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                        UIGravityBehavior *gravityBehavior = [[UIGravityBehavior alloc] initWithItems:@[obj]];
-                        gravityBehavior.magnitude = self.magnitude;
+                        [gravityBehavior addItem:obj];
                         [self.animator addBehavior:gravityBehavior];
                     });
                 }
@@ -169,28 +193,26 @@ typedef void (^ActionBlock)();
         }];
     });
 
-//    [self addGravityOnItems:self.reversedButtons magnitude:-2 * self.magnitude];
-
-//    for (int i = 0; i < self.reversedButtons.count; i++) {
-//        UIButton *button = self.buttons[i];
-//        UIDynamicItemBehavior *behavior = [[UIDynamicItemBehavior alloc] initWithItems:@[button]];
-//        behavior.resistance = i * self.resistance;
-//        [self.animator addBehavior:behavior];
-//    }
-
     if (self.popover != nil) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.buttons.count * 0.04 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self.popover dismissPopoverAnimated:YES];
-            self.popover = nil;
         });
     }
-    [UIView animateWithDuration:self.buttons.count * 0.15
+    [UIView animateWithDuration:self.buttons.count * 0.12
                      animations:^{
                          self.backgroundColor   = [UIColor clearColor]; }
                      completion:^(BOOL finished){
-                         [self removeFromSuperview];
+                         if (self.popover == nil) {
+                             [self removeFromSuperview];
+                         }
+                         [[NSNotificationCenter defaultCenter] removeObserver:self];
 
                      }];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
@@ -198,6 +220,19 @@ typedef void (^ActionBlock)();
 
 
 # pragma mark - private
+
+- (void)orientationChanged:(id)sender
+{
+    [self.popover presentPopoverFromRect:self.presentFromView.frame inView:self.presentInView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+}
+
+- (void)startOrientationObserving
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(orientationChanged:)
+                                                 name:UIDeviceOrientationDidChangeNotification
+                                               object:nil];
+}
 
 - (void)buttonWasTapped:(UIButton *)button
 {
