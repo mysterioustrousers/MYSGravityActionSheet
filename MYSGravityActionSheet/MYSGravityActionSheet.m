@@ -24,8 +24,8 @@ typedef void (^ActionBlock)();
 @property (nonatomic, assign) CGFloat             elasticity;
 @property (nonatomic, assign) CGFloat             force;
 @property (nonatomic, strong) UIPopoverController *popover;
-//@property (nonatomic, weak  ) UIView              *presentView;
-//@property (nonatomic, assign) CGRect              presentRect;
+@property (nonatomic, weak  ) UIView              *presentInView;
+@property (nonatomic, weak  ) UIView              *presentFromView;
 @end
 
 
@@ -38,6 +38,7 @@ typedef void (^ActionBlock)();
         UIViewController *viewController = [UIViewController new];
         _popover = [[UIPopoverController alloc] initWithContentViewController:viewController];
         _popover.delegate = self;
+        [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     }
     return _popover;
 }
@@ -49,11 +50,12 @@ typedef void (^ActionBlock)();
     [self adjustPopoverLayout];
 }
 
-- (void)showFromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated
+- (void)showFromView:(UIView *)fromView inView:(UIView *)inView animated:(BOOL)animated
 {
-    //self.presentRect = rect;
-    //self.presentView = view;
-    [self.popover presentPopoverFromRect:rect inView:view permittedArrowDirections:UIPopoverArrowDirectionAny animated:animated];
+    self.presentFromView = fromView;
+    self.presentInView = inView;
+    self.popover.delegate = self;
+    [self.popover presentPopoverFromRect:fromView.frame inView:inView permittedArrowDirections:UIPopoverArrowDirectionAny animated:animated];
     [self showInView:self.popover.contentViewController.view];
     [self adjustPopoverLayout];
 }
@@ -98,19 +100,15 @@ typedef void (^ActionBlock)();
             self.backgroundColor =[UIColor colorWithWhite:0.0 alpha:0.4];
         }];
     }
+    else {
+        [self startOrientationObserving];
+    }
 }
-
 
 - (void)layoutSubviews
 {
     CGRect bounds = self.bounds;
 
-    /*
-    if (self.popover) {
-        [self.popover.delegate popoverController:self.popover willRepositionPopoverToRect:self.presentRect inView:self.presentView];
-    }
-     */
-   
     // Reverse the buttons so they layout more naturally (the opposite order they are added)
     if (self.reversedButtons == nil)
         self.reversedButtons = [[self.buttons reverseObjectEnumerator] allObjects];
@@ -210,8 +208,14 @@ typedef void (^ActionBlock)();
                          if (self.popover == nil) {
                              [self removeFromSuperview];
                          }
+                         [[NSNotificationCenter defaultCenter] removeObserver:self];
 
                      }];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
@@ -219,6 +223,19 @@ typedef void (^ActionBlock)();
 
 
 # pragma mark - private
+
+- (void)orientationChanged:(id)sender
+{
+    [self.popover presentPopoverFromRect:self.presentFromView.frame inView:self.presentInView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+}
+
+- (void)startOrientationObserving
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(orientationChanged:)
+                                                 name:UIDeviceOrientationDidChangeNotification
+                                               object:nil];
+}
 
 - (void)buttonWasTapped:(UIButton *)button
 {

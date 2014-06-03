@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Ok-Uh-JoR">
-                                <rect key="frame" x="284" y="497" width="200" height="30"/>
+                                <rect key="frame" x="20" y="275" width="200" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                                 <constraints>
@@ -45,10 +45,10 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="15e-lm-aN2" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="WVZ-ea-8mw"/>
-                            <constraint firstItem="3Ok-Uh-JoR" firstAttribute="centerX" secondItem="15e-lm-aN2" secondAttribute="centerX" id="fop-r4-3zd"/>
+                            <constraint firstItem="3Ok-Uh-JoR" firstAttribute="centerX" secondItem="15e-lm-aN2" secondAttribute="centerX" constant="-264" id="fop-r4-3zd"/>
                             <constraint firstAttribute="trailing" secondItem="15e-lm-aN2" secondAttribute="trailing" id="obo-y3-SQ0"/>
                             <constraint firstItem="15e-lm-aN2" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="tLW-ni-lxx"/>
-                            <constraint firstItem="3Ok-Uh-JoR" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="vtD-5B-jR0"/>
+                            <constraint firstItem="3Ok-Uh-JoR" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-222" id="vtD-5B-jR0"/>
                         </constraints>
                     </view>
                     <connections>

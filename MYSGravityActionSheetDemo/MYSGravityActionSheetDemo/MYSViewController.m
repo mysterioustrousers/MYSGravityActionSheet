@@ -43,7 +43,7 @@
 {
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-        [self.actionSheet showFromRect:self.changeBackgroundButton.frame inView:self.view animated:YES];
+        [self.actionSheet showFromView:self.changeBackgroundButton inView:self.view animated:YES];
     }
     else {
         [self.actionSheet showInView:self.view];

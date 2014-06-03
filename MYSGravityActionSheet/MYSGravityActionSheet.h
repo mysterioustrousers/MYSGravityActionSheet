@@ -14,7 +14,7 @@
 - (void)dismiss;
 - (void)showInView:(UIView *)view;
 // iPad
-- (void)showFromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated;
+- (void)showFromView:(UIView *)fromView inView:(UIView *)inView animated:(BOOL)animated;
 - (void)showFromBarButtonItem:(UIBarButtonItem *)item inView:(UIView *)view animated:(BOOL)animated;
 
 
