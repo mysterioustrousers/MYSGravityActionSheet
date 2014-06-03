@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
                    * Try to keep it short, snappy and to the point.
                    * Finally, don't worry about the indent, CocoaPods strips it!
                    DESC
-  s.dependency 'PREBorderView', "~> 1.0" 
+  s.dependency 'AUISelectiveBordersView', "~> 0.0.1" 
   s.homepage     = "https://github.com/mysterioustrousers/MYSGravityActionSheet"
   s.license      = "MIT"
   s.author             = { "Dan Willoughby" => "amozoss@gmail.com" }

@@ -7,7 +7,7 @@
 //
 
 #import "MYSGravityActionSheet.h"
-#import "UIView+PREBorderView.h"
+#import "UIView+AUISelectiveBorder.h"
 
 typedef void (^ActionBlock)();
 
@@ -23,11 +23,30 @@ typedef void (^ActionBlock)();
 @property (nonatomic, assign) CGFloat             magnitude;
 @property (nonatomic, assign) CGFloat             elasticity;
 @property (nonatomic, assign) CGFloat             resistance;
+@property (nonatomic, strong) UIPopoverController *popover;
 @end
 
 
 @implementation MYSGravityActionSheet
 
+
+- (void)showFromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated
+{
+    if (self.popover == nil) {
+        //The color picker popover is not showing. Show it.
+        UIViewController *viewController = [UIViewController new];
+        self.popover = [[UIPopoverController alloc] initWithContentViewController:viewController];
+        [self.popover presentPopoverFromRect:rect inView:view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        
+       [self showInView:viewController.view];
+        CGRect frame = self.popover.contentViewController.view.frame;
+        frame.size.height = self.buttons.count * self.buttonHeight + self.padding;
+        
+        [self.popover setPopoverContentSize:frame.size animated:NO];
+        [self setFrame:frame];
+        //self.popover.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.4];
+    }
+}
 
 - (void)showInView:(UIView *)view
 {
@@ -50,10 +69,12 @@ typedef void (^ActionBlock)();
     [view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[selfView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(selfView)]];
     
     // do the animation
-    self.backgroundColor = [UIColor clearColor];
-    [UIView animateWithDuration:0.5 animations:^{
-        self.backgroundColor =[UIColor colorWithWhite:0.0 alpha:0.4];
-    }];
+    if (self.popover == nil) {
+        self.backgroundColor = [UIColor clearColor];
+        [UIView animateWithDuration:0.5 animations:^{
+            self.backgroundColor =[UIColor colorWithWhite:0.0 alpha:0.4];
+        }];
+    }
 }
 
 
@@ -67,7 +88,7 @@ typedef void (^ActionBlock)();
 
     for (int i = 0; i < self.buttons.count; i++) {
         UIButton *button = [self.reversedButtons objectAtIndex:i];
-        button.frame = CGRectMake(bounds.origin.x + self.padding, self.frame.origin.y + self.buttonHeight * (i * -1), bounds.size.width - self.padding * 2, self.buttonHeight);
+        button.frame = CGRectMake(bounds.origin.x + self.padding , bounds.origin.y + self.buttonHeight * ((i + 1) * -1), bounds.size.width - self.padding * 2, self.buttonHeight);
     }
     
     if (self.buttons.count == 1) {
@@ -75,7 +96,9 @@ typedef void (^ActionBlock)();
     }
     else if (self.buttons.count > 1) {
         [self roundCorner:self.reversedButtons[0] corners:UIRectCornerBottomLeft | UIRectCornerBottomRight];
-        [self roundCorner:self.reversedButtons.lastObject corners:UIRectCornerTopLeft | UIRectCornerTopRight];
+        UIButton *topButton = self.reversedButtons.lastObject;
+        topButton.selectiveBordersWidth = 0;
+        [self roundCorner:topButton corners:UIRectCornerTopLeft | UIRectCornerTopRight];
     }
     [self addAnimations];
 }
@@ -91,8 +114,11 @@ typedef void (^ActionBlock)();
     if (block != nil) 
         self.buttonBlockDictionary[title] = block;
     
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
-    [button addOneRetinaPixelBorderWithColor:[UIColor colorWithWhite:0.0 alpha:0.4]];
+    UIButton *button                = [UIButton buttonWithType:UIButtonTypeSystem];
+    button.selectiveBordersColor    = [UIColor colorWithWhite:0.0 alpha:0.4];
+    button.selectiveBordersWidth    = 1;
+    button.selectiveBorderFlag      = AUISelectiveBordersFlagTop;
+    
     [button setTitle:title forState:UIControlStateNormal];
     [button addTarget:self action:@selector(buttonWasTapped:) forControlEvents:UIControlEventTouchDown];
     //button.titleLabel.font = [UIFont systemFontOfSize:13.0];
@@ -120,12 +146,19 @@ typedef void (^ActionBlock)();
         [self.animator addBehavior:behavior];
     }
     
-    [UIView animateWithDuration:self.buttons.count * 0.11
-                     animations:^{
-                         self.backgroundColor =[UIColor clearColor]; }
-                     completion:^(BOOL finished){
-                         [self removeFromSuperview];
-                     }];
+    if (self.popover != nil) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.buttons.count * 0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.popover dismissPopoverAnimated:YES];
+        self.popover = nil;
+        });
+    }
+        [UIView animateWithDuration:self.buttons.count * 0.11
+                         animations:^{
+                             self.backgroundColor   = [UIColor clearColor]; }
+                         completion:^(BOOL finished){
+                             [self removeFromSuperview];
+                             
+                         }];
 }
 
 
@@ -203,14 +236,15 @@ typedef void (^ActionBlock)();
                                     fromPoint:CGPointMake(0,bounds.size.height - self.paddingBottom)
                                       toPoint:CGPointMake(bounds.size.width,
                                                           bounds.size.height)];
-    double offset = -0.1;
+    double offset = 0.5;
+    
     [collision addBoundaryWithIdentifier:@"leftside"
                                     fromPoint:CGPointMake(self.padding + offset,0)
                                       toPoint:CGPointMake(self.padding + offset,
                                                           bounds.size.height)];
     [collision addBoundaryWithIdentifier:@"rightside"
-                                    fromPoint:CGPointMake(bounds.size.width - self.padding + offset, 0)
-                                      toPoint:CGPointMake(bounds.size.width - self.padding + offset,
+                                    fromPoint:CGPointMake(bounds.size.width - self.padding - offset, 0)
+                                      toPoint:CGPointMake(bounds.size.width - self.padding - offset,
                                                           bounds.size.height)];
     [animator addBehavior:collision];
 }

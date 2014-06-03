@@ -12,7 +12,7 @@
 
 - (void)dismiss;
 - (void)showInView:(UIView *)view;
-//- (void)showFromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated; // iPad
+- (void)showFromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated; // iPad
 - (void)addButtonWithTitle:(NSString *)title block:(void (^)(void))block;
 
 /*

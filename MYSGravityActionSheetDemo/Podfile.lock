@@ -1,7 +1,7 @@
 PODS:
+  - AUISelectiveBordersView (0.0.1)
   - MYSGravityActionSheet (0.0.1):
-    - PREBorderView (~> 1.0)
-  - PREBorderView (1.0.0)
+    - AUISelectiveBordersView (~> 0.0.1)
 
 DEPENDENCIES:
   - MYSGravityActionSheet (from `../`)
@@ -11,7 +11,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  MYSGravityActionSheet: e9b25411f59d706de42c2c921244aaabbd3a8222
-  PREBorderView: b1df606c977a0406df259488609227edb4b07140
+  AUISelectiveBordersView: 1bb2cefcb9e0562c436292e98b2a3f40dece4d66
+  MYSGravityActionSheet: 15ae3e2f03ddc7b4a7ff55f41cdfa8d29bb36f1d
 
 COCOAPODS: 0.33.1

@@ -23,10 +23,16 @@
                                 <state key="normal" title="Change Background">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="changeBackgroundWasTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tsJ-Sc-bIq"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="changeBackgroundButton" destination="3Ok-Uh-JoR" id="dy5-kF-O2P"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
