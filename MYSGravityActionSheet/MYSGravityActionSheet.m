@@ -11,7 +11,7 @@
 
 typedef void (^ActionBlock)();
 
-@interface MYSGravityActionSheet ()
+@interface MYSGravityActionSheet () <UIPopoverControllerDelegate>
 @property (nonatomic, strong) UIDynamicAnimator   *animator;
 @property (nonatomic, strong) NSMutableArray      *buttons;
 @property (nonatomic, strong) NSArray             *reversedButtons;
@@ -24,28 +24,49 @@ typedef void (^ActionBlock)();
 @property (nonatomic, assign) CGFloat             elasticity;
 @property (nonatomic, assign) CGFloat             force;
 @property (nonatomic, strong) UIPopoverController *popover;
+//@property (nonatomic, weak  ) UIView              *presentView;
+//@property (nonatomic, assign) CGRect              presentRect;
 @end
 
 
 @implementation MYSGravityActionSheet
 
 
+- (UIPopoverController *)popover
+{
+    if (_popover == nil && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        UIViewController *viewController = [UIViewController new];
+        _popover = [[UIPopoverController alloc] initWithContentViewController:viewController];
+        _popover.delegate = self;
+    }
+    return _popover;
+}
+
+- (void)showFromBarButtonItem:(UIBarButtonItem *)item inView:(UIView *)view animated:(BOOL)animated
+{
+    [self.popover presentPopoverFromBarButtonItem:item permittedArrowDirections:UIPopoverArrowDirectionAny animated:animated];
+    [self showInView:self.popover.contentViewController.view];
+    [self adjustPopoverLayout];
+}
+
 - (void)showFromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated
 {
-    if (self.popover == nil) {
-        //The color picker popover is not showing. Show it.
-        UIViewController *viewController = [UIViewController new];
-        self.popover = [[UIPopoverController alloc] initWithContentViewController:viewController];
-        [self.popover presentPopoverFromRect:rect inView:view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        
-       [self showInView:viewController.view];
-        CGRect frame = self.popover.contentViewController.view.frame;
-        frame.size.height = self.buttons.count * self.buttonHeight + self.padding;
-        
-        [self.popover setPopoverContentSize:frame.size animated:NO];
-        [self setFrame:frame];
-        //self.popover.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.4];
-    }
+    //self.presentRect = rect;
+    //self.presentView = view;
+    [self.popover presentPopoverFromRect:rect inView:view permittedArrowDirections:UIPopoverArrowDirectionAny animated:animated];
+    [self showInView:self.popover.contentViewController.view];
+    [self adjustPopoverLayout];
+}
+
+- (void)adjustPopoverLayout
+{
+    CGRect frame = self.popover.contentViewController.view.frame;
+    double overlapAdjust = self.buttons.count > 7 ? 0.15 : 0.25; // the buttons overlap and aren't quite their original size...
+    
+    frame.size.height = self.buttons.count * (self.buttonHeight - self.buttons.count * overlapAdjust) + self.paddingBottom * 2;
+    
+    [self.popover setPopoverContentSize:frame.size animated:NO];
+    [self setFrame:frame];
 }
 
 - (void)showInView:(UIView *)view
@@ -56,12 +77,14 @@ typedef void (^ActionBlock)();
     self.buttonHeight  = 50;
     self.magnitude     = 3.0;
     self.elasticity    = 0.55;
-    self.force         = -100;      // before items leave the screen upwards, resistance is applied iteratively to each item.
-                                // item 0 (top) = 0; item 1 = resistance; item 2 = 2 * resistance;
+    self.force         = -100; // applies force to items above selected item
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapped:)];
     [self addGestureRecognizer:tap];
-    [view addSubview:self];
+    if(![self isDescendantOfView: view]) {
+        [view addSubview:self];
+        [self setNeedsLayout];
+    }
     
     UIView *selfView = self;
     self.translatesAutoresizingMaskIntoConstraints = NO;
@@ -81,6 +104,12 @@ typedef void (^ActionBlock)();
 - (void)layoutSubviews
 {
     CGRect bounds = self.bounds;
+
+    /*
+    if (self.popover) {
+        [self.popover.delegate popoverController:self.popover willRepositionPopoverToRect:self.presentRect inView:self.presentView];
+    }
+     */
    
     // Reverse the buttons so they layout more naturally (the opposite order they are added)
     if (self.reversedButtons == nil)
@@ -172,14 +201,15 @@ typedef void (^ActionBlock)();
     if (self.popover != nil) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.buttons.count * 0.04 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self.popover dismissPopoverAnimated:YES];
-            self.popover = nil;
         });
     }
-    [UIView animateWithDuration:self.buttons.count * 0.15
+    [UIView animateWithDuration:self.buttons.count * 0.12
                      animations:^{
                          self.backgroundColor   = [UIColor clearColor]; }
                      completion:^(BOOL finished){
-                         [self removeFromSuperview];
+                         if (self.popover == nil) {
+                             [self removeFromSuperview];
+                         }
 
                      }];
 }

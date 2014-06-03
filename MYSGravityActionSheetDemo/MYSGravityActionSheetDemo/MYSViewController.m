@@ -22,6 +22,15 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    self.actionSheet = [[MYSGravityActionSheet alloc] init];
+    __weak UIViewController *bself = self;
+    [self.actionSheet addButtonWithTitle: @"Red"    block: ^{ bself.view.backgroundColor = [UIColor redColor]; }];
+    [self.actionSheet addButtonWithTitle: @"Orange" block: ^{ bself.view.backgroundColor = [UIColor orangeColor]; }];
+    [self.actionSheet addButtonWithTitle: @"Yellow" block: ^{ bself.view.backgroundColor = [UIColor yellowColor]; }];
+    [self.actionSheet addButtonWithTitle: @"Green"  block: ^{ bself.view.backgroundColor = [UIColor greenColor]; }];
+    [self.actionSheet addButtonWithTitle: @"Blue"   block: ^{ bself.view.backgroundColor = [UIColor blueColor]; }];
+    [self.actionSheet addButtonWithTitle: @"Purple" block: ^{ bself.view.backgroundColor = [UIColor purpleColor]; }];
+    [self.actionSheet addButtonWithTitle: @"Cancel" block: nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -32,21 +41,19 @@
 
 - (IBAction)changeBackgroundWasTapped:(id)sender
 {
-    self.actionSheet = [[MYSGravityActionSheet alloc] init];
-    __weak UIViewController *bself = self;
-    [self.actionSheet addButtonWithTitle: @"Red"    block: ^{ bself.view.backgroundColor = [UIColor redColor]; }];
-    [self.actionSheet addButtonWithTitle: @"Orange" block: ^{ bself.view.backgroundColor = [UIColor orangeColor]; }];
-    [self.actionSheet addButtonWithTitle: @"Yellow" block: ^{ bself.view.backgroundColor = [UIColor yellowColor]; }];
-    [self.actionSheet addButtonWithTitle: @"Green"  block: ^{ bself.view.backgroundColor = [UIColor greenColor]; }];
-    [self.actionSheet addButtonWithTitle: @"Blue"   block: ^{ bself.view.backgroundColor = [UIColor blueColor]; }];
-    [self.actionSheet addButtonWithTitle: @"Purple" block: ^{ bself.view.backgroundColor = [UIColor purpleColor]; }];
-    [self.actionSheet addButtonWithTitle: @"Cancel" block: nil];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
         [self.actionSheet showFromRect:self.changeBackgroundButton.frame inView:self.view animated:YES];
     }
     else {
-    [self.actionSheet showInView:self.view];
+        [self.actionSheet showInView:self.view];
     }
+}
+
+- (IBAction)barButtonWasTapped:(UIBarButtonItem *)sender
+{
+    [self.actionSheet showFromBarButtonItem:sender inView:self.view animated:YES];
+    
+    
 }
 @end
