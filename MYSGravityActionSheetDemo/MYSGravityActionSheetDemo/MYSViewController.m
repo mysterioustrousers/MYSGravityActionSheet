@@ -10,6 +10,9 @@
 #import "MYSGravityActionSheet.h"
 
 @interface MYSViewController ()
+@property (weak, nonatomic) IBOutlet UIButton *changeBackgroundButton;
+@property (nonatomic, strong)  MYSGravityActionSheet *actionSheet;
+
 
 @end
 
@@ -29,17 +32,21 @@
 
 - (IBAction)changeBackgroundWasTapped:(id)sender
 {
-    MYSGravityActionSheet *actionSheet = [[MYSGravityActionSheet alloc] init];
+    self.actionSheet = [[MYSGravityActionSheet alloc] init];
     __weak UIViewController *bself = self;
-    [actionSheet addButtonWithTitle: @"Red"    block: ^{ bself.view.backgroundColor = [UIColor redColor]; }];
-    [actionSheet addButtonWithTitle: @"Orange" block: ^{ bself.view.backgroundColor = [UIColor orangeColor]; }];
-    [actionSheet addButtonWithTitle: @"Yellow" block: ^{ bself.view.backgroundColor = [UIColor yellowColor]; }];
-    [actionSheet addButtonWithTitle: @"Green"  block: ^{ bself.view.backgroundColor = [UIColor greenColor]; }];
-    [actionSheet addButtonWithTitle: @"Blue"   block: ^{ bself.view.backgroundColor = [UIColor blueColor]; }];
-    [actionSheet addButtonWithTitle: @"Purple" block: ^{ bself.view.backgroundColor = [UIColor purpleColor]; }];
-    [actionSheet addButtonWithTitle: @"Cancel" block: nil];
+    [self.actionSheet addButtonWithTitle: @"Red"    block: ^{ bself.view.backgroundColor = [UIColor redColor]; }];
+    [self.actionSheet addButtonWithTitle: @"Orange" block: ^{ bself.view.backgroundColor = [UIColor orangeColor]; }];
+    [self.actionSheet addButtonWithTitle: @"Yellow" block: ^{ bself.view.backgroundColor = [UIColor yellowColor]; }];
+    [self.actionSheet addButtonWithTitle: @"Green"  block: ^{ bself.view.backgroundColor = [UIColor greenColor]; }];
+    [self.actionSheet addButtonWithTitle: @"Blue"   block: ^{ bself.view.backgroundColor = [UIColor blueColor]; }];
+    [self.actionSheet addButtonWithTitle: @"Purple" block: ^{ bself.view.backgroundColor = [UIColor purpleColor]; }];
+    [self.actionSheet addButtonWithTitle: @"Cancel" block: nil];
     
-    [actionSheet showInView:self.view];
-    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+        [self.actionSheet showFromRect:self.changeBackgroundButton.frame inView:self.view animated:YES];
+    }
+    else {
+    [self.actionSheet showInView:self.view];
+    }
 }
 @end

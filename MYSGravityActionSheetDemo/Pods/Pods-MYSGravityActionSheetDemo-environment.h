@@ -6,15 +6,15 @@
 // project.
 
 
+// AUISelectiveBordersView
+#define COCOAPODS_POD_AVAILABLE_AUISelectiveBordersView
+#define COCOAPODS_VERSION_MAJOR_AUISelectiveBordersView 0
+#define COCOAPODS_VERSION_MINOR_AUISelectiveBordersView 0
+#define COCOAPODS_VERSION_PATCH_AUISelectiveBordersView 1
+
 // MYSGravityActionSheet
 #define COCOAPODS_POD_AVAILABLE_MYSGravityActionSheet
 #define COCOAPODS_VERSION_MAJOR_MYSGravityActionSheet 0
 #define COCOAPODS_VERSION_MINOR_MYSGravityActionSheet 0
 #define COCOAPODS_VERSION_PATCH_MYSGravityActionSheet 1
-
-// PREBorderView
-#define COCOAPODS_POD_AVAILABLE_PREBorderView
-#define COCOAPODS_VERSION_MAJOR_PREBorderView 1
-#define COCOAPODS_VERSION_MINOR_PREBorderView 0
-#define COCOAPODS_VERSION_PATCH_PREBorderView 0
 

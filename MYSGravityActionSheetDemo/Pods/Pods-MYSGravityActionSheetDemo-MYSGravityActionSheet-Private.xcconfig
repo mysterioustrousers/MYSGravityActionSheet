@@ -1,5 +1,5 @@
 #include "Pods-MYSGravityActionSheetDemo-MYSGravityActionSheet.xcconfig"
 GCC_PREPROCESSOR_DEFINITIONS = COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/MYSGravityActionSheet" "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/MYSGravityActionSheet" "${PODS_ROOT}/Headers/PREBorderView"
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/MYSGravityActionSheet" "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/AUISelectiveBordersView" "${PODS_ROOT}/Headers/MYSGravityActionSheet"
 OTHER_LDFLAGS = -ObjC
 PODS_ROOT = ${SRCROOT}
