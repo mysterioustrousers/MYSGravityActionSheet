@@ -146,6 +146,7 @@ typedef void (^ActionBlock)();
 
     UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
     [button setTitle:title forState:UIControlStateNormal];
+    button.tag = self.buttons.count;
     [button addTarget:self action:@selector(buttonWasTapped:) forControlEvents:UIControlEventTouchDown];
     button.backgroundColor = [UIColor groupTableViewBackgroundColor];
     [buttonContainer addSubview:button];
@@ -167,7 +168,7 @@ typedef void (^ActionBlock)();
             [((UICollisionBehavior *)behavior) removeAllBoundaries]; // so items don't get stuck on walls
     }
 
-    NSInteger buttonIndex = [self.buttons indexOfObject:button];
+    NSInteger buttonIndex = button.tag;
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         UIGravityBehavior *gravityBehavior = [[UIGravityBehavior alloc] init];
@@ -303,7 +304,7 @@ typedef void (^ActionBlock)();
                                     fromPoint:CGPointMake(0,bounds.size.height - self.paddingBottom)
                                       toPoint:CGPointMake(bounds.size.width,
                                                           bounds.size.height)];
-    double offset = 0.0;
+    double offset = 0.1;
     
     [collision addBoundaryWithIdentifier:@"leftside"
                                     fromPoint:CGPointMake(self.padding + offset,0)
