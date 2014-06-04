@@ -7,7 +7,6 @@
 //
 
 #import "MYSGravityActionSheet.h"
-#import "UIView+AUISelectiveBorder.h"
 
 typedef void (^ActionBlock)();
 
@@ -121,7 +120,6 @@ typedef void (^ActionBlock)();
     else if (self.buttons.count > 1) {
         [self roundCorner:self.reversedButtons[0] corners:UIRectCornerBottomLeft | UIRectCornerBottomRight];
         UIButton *topButton = self.reversedButtons.lastObject;
-        topButton.selectiveBordersWidth = 0;
         [self roundCorner:topButton corners:UIRectCornerTopLeft | UIRectCornerTopRight];
     }
     [self addAnimations];
@@ -138,11 +136,7 @@ typedef void (^ActionBlock)();
     if (block != nil) 
         self.buttonBlockDictionary[title] = block;
     
-    UIButton *button                = [UIButton buttonWithType:UIButtonTypeSystem];
-    button.selectiveBordersColor    = [UIColor colorWithWhite:0.0 alpha:0.4];
-    button.selectiveBordersWidth    = 1;
-    button.selectiveBorderFlag      = AUISelectiveBordersFlagTop;
-    
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
     [button setTitle:title forState:UIControlStateNormal];
     [button addTarget:self action:@selector(buttonWasTapped:) forControlEvents:UIControlEventTouchDown];
     //button.titleLabel.font = [UIFont systemFontOfSize:13.0];
