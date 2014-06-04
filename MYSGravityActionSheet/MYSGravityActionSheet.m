@@ -303,7 +303,7 @@ typedef void (^ActionBlock)();
                                     fromPoint:CGPointMake(0,bounds.size.height - self.paddingBottom)
                                       toPoint:CGPointMake(bounds.size.width,
                                                           bounds.size.height)];
-    double offset = 0.5;
+    double offset = 0.0;
     
     [collision addBoundaryWithIdentifier:@"leftside"
                                     fromPoint:CGPointMake(self.padding + offset,0)
