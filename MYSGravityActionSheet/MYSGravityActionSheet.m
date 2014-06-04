@@ -83,12 +83,12 @@ typedef void (^ActionBlock)();
         [view addSubview:self];
         [self setNeedsLayout];
     }
-    
+
     UIView *selfView = self;
     self.translatesAutoresizingMaskIntoConstraints = NO;
     [view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[selfView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(selfView)]];
     [view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[selfView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(selfView)]];
-    
+
     // do the animation
     if (self.popover == nil) {
         self.backgroundColor = [UIColor clearColor];
@@ -103,6 +103,7 @@ typedef void (^ActionBlock)();
 
 - (void)layoutSubviews
 {
+    [super layoutSubviews];
     CGRect bounds = self.bounds;
 
     // Reverse the buttons so they layout more naturally (the opposite order they are added)
@@ -110,17 +111,21 @@ typedef void (^ActionBlock)();
         self.reversedButtons = [[self.buttons reverseObjectEnumerator] allObjects];
 
     for (int i = 0; i < self.buttons.count; i++) {
-        UIButton *button = [self.reversedButtons objectAtIndex:i];
-        button.frame = CGRectMake(bounds.origin.x + self.padding , bounds.origin.y + self.buttonHeight * ((i + 1) * -1), bounds.size.width - self.padding * 2, self.buttonHeight);
+        UIView *buttonContainer = [self.reversedButtons objectAtIndex:i];
+        buttonContainer.frame = CGRectMake(bounds.origin.x + self.padding , bounds.origin.y + self.buttonHeight * ((i + 1) * -1), bounds.size.width - self.padding * 2, self.buttonHeight);
+        UIButton *button = [[buttonContainer subviews] lastObject];
+        button.frame = CGRectInset(buttonContainer.bounds, 0, 2);
     }
     
     if (self.buttons.count == 1) {
-        [self roundCorner:self.reversedButtons.lastObject corners:UIRectCornerAllCorners];
+        UIButton *button = [[[self.reversedButtons lastObject] subviews] lastObject];
+        [self roundCorner:button corners:UIRectCornerAllCorners];
     }
     else if (self.buttons.count > 1) {
-        [self roundCorner:self.reversedButtons[0] corners:UIRectCornerBottomLeft | UIRectCornerBottomRight];
-        UIButton *topButton = self.reversedButtons.lastObject;
+        UIButton *topButton = [[[self.reversedButtons lastObject] subviews] lastObject];
         [self roundCorner:topButton corners:UIRectCornerTopLeft | UIRectCornerTopRight];
+        UIButton *bottomButton = [[[self.reversedButtons firstObject] subviews] lastObject];
+        [self roundCorner:bottomButton corners:UIRectCornerBottomLeft | UIRectCornerBottomRight];
     }
     [self addAnimations];
 }
@@ -135,15 +140,17 @@ typedef void (^ActionBlock)();
     }
     if (block != nil) 
         self.buttonBlockDictionary[title] = block;
-    
+
+    UIView *buttonContainer = [UIView new];
+    [self addSubview:buttonContainer];
+
     UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
     [button setTitle:title forState:UIControlStateNormal];
     [button addTarget:self action:@selector(buttonWasTapped:) forControlEvents:UIControlEventTouchDown];
-    //button.titleLabel.font = [UIFont systemFontOfSize:13.0];
     button.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    [buttonContainer addSubview:button];
     
-    [self.buttons addObject:button];
-    [self addSubview:button];
+    [self.buttons addObject:buttonContainer];
 }
 
 - (void)dismiss
