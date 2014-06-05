@@ -10,6 +10,8 @@
 
 @interface MYSGravityActionSheet : UIView
 
+@property (nonatomic, assign, getter = isVisible) BOOL visible;
+
 - (void)addButtonWithTitle:(NSString *)title block:(void (^)(void))block;
 - (void)dismiss;
 - (void)showInView:(UIView *)view;

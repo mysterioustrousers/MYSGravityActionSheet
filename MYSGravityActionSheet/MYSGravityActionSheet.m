@@ -69,11 +69,13 @@ typedef void (^ActionBlock)();
 
 - (void)showInView:(UIView *)view
 {
+    self.visible = YES;
+
     // pre-animation configuration
     self.padding       = 10;
     self.paddingBottom = 10;
     self.buttonHeight  = 50;
-    self.magnitude     = 3.0;
+    self.magnitude     = 4.0;
     self.elasticity    = 0.55;
     self.force         = -100; // applies force to items above selected item
     
@@ -146,7 +148,6 @@ typedef void (^ActionBlock)();
 
     UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
     [button setTitle:title forState:UIControlStateNormal];
-    button.tag = self.buttons.count;
     [button addTarget:self action:@selector(buttonWasTapped:) forControlEvents:UIControlEventTouchDown];
     button.backgroundColor = [UIColor groupTableViewBackgroundColor];
     [buttonContainer addSubview:button];
@@ -168,7 +169,7 @@ typedef void (^ActionBlock)();
             [((UICollisionBehavior *)behavior) removeAllBoundaries]; // so items don't get stuck on walls
     }
 
-    NSInteger buttonIndex = button.tag;
+    NSInteger buttonIndex = [self.buttons indexOfObject:[button superview]];
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         UIGravityBehavior *gravityBehavior = [[UIGravityBehavior alloc] init];
@@ -200,12 +201,18 @@ typedef void (^ActionBlock)();
             [self.popover dismissPopoverAnimated:YES];
         });
     }
+
     [UIView animateWithDuration:self.buttons.count * 0.12
                      animations:^{
-                         self.backgroundColor   = [UIColor clearColor]; }
+                         self.backgroundColor = [UIColor clearColor];
+                     }
                      completion:^(BOOL finished){
                          if (self.popover == nil) {
+                             NSString *key       = button.titleLabel.text;
+                             ActionBlock block   = self.buttonBlockDictionary[key];
+                             if (block) block();
                              [self removeFromSuperview];
+                             self.visible = NO;
                          }
                          [[NSNotificationCenter defaultCenter] removeObserver:self];
 
@@ -238,9 +245,6 @@ typedef void (^ActionBlock)();
 
 - (void)buttonWasTapped:(UIButton *)button
 {
-    NSString *key       = button.titleLabel.text;
-    ActionBlock block   = self.buttonBlockDictionary[key];
-    if (block) block();
     [self dismissWithButton:button]; // always dismiss
 }
 
