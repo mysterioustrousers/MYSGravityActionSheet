@@ -382,13 +382,6 @@ typedef void (^ActionBlock)();
         [arr insertObject:cancelView atIndex:0];
     }
     
-    // Put tags for dismiss animation
-    for (int i = 0; i < arr.count; i++) {
-        UIView *buttonContainer = [arr objectAtIndex:i];
-        UIButton *button    = [[buttonContainer subviews] lastObject];
-        button.tag = i;
-    }
-    
     return [NSArray arrayWithArray:arr];
 }
 
