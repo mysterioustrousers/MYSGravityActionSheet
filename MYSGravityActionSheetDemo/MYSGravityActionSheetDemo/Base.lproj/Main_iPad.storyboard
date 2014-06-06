@@ -17,17 +17,56 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Ok-Uh-JoR">
-                                <rect key="frame" x="20" y="275" width="200" height="30"/>
+                                <rect key="frame" x="313" y="44" width="143" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="200" id="qe2-Yr-ClA"/>
+                                    <constraint firstAttribute="width" constant="143" id="IEG-GC-Tlj"/>
                                 </constraints>
                                 <state key="normal" title="Change Background">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="changeBackgroundWasTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tsJ-Sc-bIq"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VuA-Gr-MZt">
+                                <rect key="frame" x="20" y="497" width="143" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="143" id="xf8-3Y-wom"/>
+                                </constraints>
+                                <state key="normal" title="Change Background">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="changeBackgroundWasTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Crc-Rh-Glh"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3pB-7Y-B03">
+                                <rect key="frame" x="605" y="497" width="143" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="143" id="HiZ-O5-FNz"/>
+                                </constraints>
+                                <state key="normal" title="Change Background">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="changeBackgroundWasTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="IR5-XI-r1h"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YWR-FH-ct9">
+                                <rect key="frame" x="313" y="974" width="143" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                                <state key="normal" title="Change Background">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="changeBackgroundWasTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="34q-LB-WRx"/>
                                 </connections>
                             </button>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="15e-lm-aN2">
@@ -44,11 +83,18 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="VuA-Gr-MZt" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="97s-5H-GDJ"/>
+                            <constraint firstItem="VuA-Gr-MZt" firstAttribute="baseline" secondItem="3pB-7Y-B03" secondAttribute="baseline" id="DvG-Th-dpX"/>
+                            <constraint firstItem="VuA-Gr-MZt" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="Nfp-8E-Iy5"/>
+                            <constraint firstItem="3Ok-Uh-JoR" firstAttribute="top" secondItem="15e-lm-aN2" secondAttribute="bottom" id="S7o-No-wXc"/>
                             <constraint firstItem="15e-lm-aN2" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="WVZ-ea-8mw"/>
-                            <constraint firstItem="3Ok-Uh-JoR" firstAttribute="centerX" secondItem="15e-lm-aN2" secondAttribute="centerX" constant="-264" id="fop-r4-3zd"/>
+                            <constraint firstAttribute="bottom" secondItem="YWR-FH-ct9" secondAttribute="bottom" constant="20" symbolic="YES" id="XcJ-8R-sMQ"/>
+                            <constraint firstAttribute="trailing" secondItem="3pB-7Y-B03" secondAttribute="trailing" constant="20" symbolic="YES" id="bA7-C3-UAq"/>
+                            <constraint firstAttribute="centerX" secondItem="3Ok-Uh-JoR" secondAttribute="centerX" constant="-0.5" id="nIw-4L-c54"/>
                             <constraint firstAttribute="trailing" secondItem="15e-lm-aN2" secondAttribute="trailing" id="obo-y3-SQ0"/>
                             <constraint firstItem="15e-lm-aN2" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="tLW-ni-lxx"/>
-                            <constraint firstItem="3Ok-Uh-JoR" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-222" id="vtD-5B-jR0"/>
+                            <constraint firstItem="3Ok-Uh-JoR" firstAttribute="trailing" secondItem="YWR-FH-ct9" secondAttribute="trailing" id="uCy-2O-Etm"/>
+                            <constraint firstItem="3Ok-Uh-JoR" firstAttribute="leading" secondItem="YWR-FH-ct9" secondAttribute="leading" id="xgd-GA-czz"/>
                         </constraints>
                     </view>
                     <connections>

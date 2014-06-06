@@ -12,7 +12,6 @@
 
 @property (nonatomic, assign, getter = isVisible) BOOL visible;
 
-- (void)addButtonWithTitle:(NSString *)title block:(void (^)(void))block;
 - (void)dismiss;
 - (void)showInView:(UIView *)view;
 // iPad
@@ -20,13 +19,16 @@
 - (void)showFromBarButtonItem:(UIBarButtonItem *)item inView:(UIView *)view animated:(BOOL)animated;
 
 
-/*
+- (void)addButtonWithTitle:(NSString *)title block:(void (^)(void))block;
+
 // Adds a cancel button. Use only once.
-- (void)setCancelButtonWithTitle:(NSString *)title block:(void (^)(NSInteger buttonIndex))block;
+- (void)setCancelButtonWithTitle:(NSString *)title block:(void (^)(void))block;
 
 /// Adds a destructive button. Use only once.
-- (void)setDestructiveButtonWithTitle:(NSString *)title block:(void (^)(NSInteger buttonIndex))block;
+- (void)setDestructiveButtonWithTitle:(NSString *)title block:(void (^)(void))block;
 
+
+/*
 /// Add regular button.
 
 /// @name Properties and show/destroy
