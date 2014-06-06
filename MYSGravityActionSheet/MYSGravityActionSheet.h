@@ -10,6 +10,8 @@
 
 @interface MYSGravityActionSheet : UIView
 
+@property (nonatomic, assign, getter = isVisible) BOOL visible;
+
 - (void)dismiss;
 - (void)showInView:(UIView *)view;
 // iPad
