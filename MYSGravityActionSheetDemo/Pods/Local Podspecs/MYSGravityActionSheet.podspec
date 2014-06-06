@@ -1,9 +1,7 @@
 Pod::Spec.new do |s|
-
   s.name         = "MYSGravityActionSheet"
   s.version      = "0.0.1"
   s.summary      = "An action sheet that uses UIKit Dynamics to present buttons in a playful, interesting way."
-
   s.description  = <<-DESC
                    A longer description of MYSGravityActionSheet in Markdown format.
 
@@ -12,16 +10,14 @@ Pod::Spec.new do |s|
                    * Try to keep it short, snappy and to the point.
                    * Finally, don't worry about the indent, CocoaPods strips it!
                    DESC
-  s.dependency 'AUISelectiveBordersView', "~> 0.0.1" 
   s.homepage     = "https://github.com/mysterioustrousers/MYSGravityActionSheet"
   s.license      = "MIT"
-  s.author             = { "Dan Willoughby" => "amozoss@gmail.com" }
+  s.author       = { "Dan Willoughby" => "amozoss@gmail.com" }
   s.platform     = :ios, "7.0"
-  s.source       = { :git => "http://EXAMPLE/MYSGravityActionSheet.git", :tag => "0.0.1" }
   s.source       =  {
 	  :git => "https://github.com/mysterioustrousers/MYSGravityActionSheet.git",
 	  :tag => "#{s.version}",
   }
-  s.source_files  = "MYSGravityActionSheet", "MYSGravityActionSheet/**/*.{h,m}"
+  s.source_files  = "MYSGravityActionSheet/*.{h,m}"
   s.requires_arc = true
 end
