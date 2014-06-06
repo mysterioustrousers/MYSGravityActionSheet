@@ -231,7 +231,7 @@ typedef void (^ActionBlock)();
             [((UICollisionBehavior *)behavior) removeAllBoundaries]; // so items don't get stuck on walls
     }
 
-    NSInteger buttonIndex = [self.buttons indexOfObject:[button superview]];
+    NSInteger buttonIndex = [self.reorderedButtons indexOfObject:[button superview]];
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         UIGravityBehavior *gravityBehavior = [[UIGravityBehavior alloc] init];
@@ -272,6 +272,7 @@ typedef void (^ActionBlock)();
     });
     
     // A rect on the bottom of the superview to detect when the last visable view is leaving. Then fade the backdrop.
+    // TODO looks awful with bottom buttons on iPhone and  when popup is near bottom on iPad
     CGFloat height      = self.superview.bounds.size.height * 0.30;
     CGRect superview    = self.superview.bounds;
     CGRect bottom       = CGRectMake(superview.origin.x, superview.size.height - height, superview.size.width, height);
@@ -283,6 +284,11 @@ typedef void (^ActionBlock)();
         UIDynamicItemBehavior *dynamic      = [[UIDynamicItemBehavior alloc] initWithItems:@[lastVisableView]];
         dynamic.action = ^{
             if (!CGRectIntersectsRect(lastVisableView.superview.bounds, lastVisableView.frame)) {
+                NSString *key       = button.titleLabel.text;
+                ActionBlock block   = self.buttonBlockDictionary[key];
+                if (block) block();
+                self.visible = NO;
+                
                 [self removeFromSuperview];
                 self.animator = nil;
                 [[NSNotificationCenter defaultCenter] removeObserver:self];
