@@ -111,9 +111,7 @@ typedef void (^ActionBlock)();
         self.backgroundColor =[UIColor colorWithWhite:0.0 alpha:0.2];
     }];
     
-    if (self.popover != nil) {
-        [self startOrientationObserving];
-    }
+    [self startOrientationObserving];
 }
 
 
@@ -427,12 +425,14 @@ typedef void (^ActionBlock)();
 
 - (void)orientationChanged:(id)sender
 {
-    [self.popover presentPopoverFromRect:self.presentFromView.frame inView:self.presentInView permittedArrowDirections:UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown animated:NO];
-    CGRect pt1                      = [self.popover.contentViewController.view convertRect:self.popover.contentViewController.view.bounds toView:self.presentInView];
-    self.arrowView.arrowDirection   = self.popover.popoverArrowDirection;
-    [self.popover dismissPopoverAnimated:NO];
+    if (self.popover) {
+        [self.popover presentPopoverFromRect:self.presentFromView.frame inView:self.presentInView permittedArrowDirections:UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown animated:NO];
+        CGRect pt1                      = [self.popover.contentViewController.view convertRect:self.popover.contentViewController.view.bounds toView:self.presentInView];
+        self.arrowView.arrowDirection   = self.popover.popoverArrowDirection;
+        [self.popover dismissPopoverAnimated:NO];
 
-    self.displayRect = pt1;
+        self.displayRect = pt1;
+    }
     self.animator = nil;
     [self setNeedsLayout];
 }
