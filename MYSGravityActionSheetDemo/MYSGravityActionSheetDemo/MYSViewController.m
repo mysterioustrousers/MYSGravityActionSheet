@@ -21,16 +21,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+
     self.actionSheet = [[MYSGravityActionSheet alloc] init];
     __weak UIViewController *bself = self;
-    [self.actionSheet addButtonWithTitle: @"Red"    block: ^{ bself.view.backgroundColor = [UIColor redColor]; }];
+    [self.actionSheet setDestructiveButtonWithTitle: @"Red"    block: ^{ bself.view.backgroundColor = [UIColor redColor]; }];
     [self.actionSheet addButtonWithTitle: @"Orange" block: ^{ bself.view.backgroundColor = [UIColor orangeColor]; }];
     [self.actionSheet addButtonWithTitle: @"Yellow" block: ^{ bself.view.backgroundColor = [UIColor yellowColor]; }];
     [self.actionSheet addButtonWithTitle: @"Green"  block: ^{ bself.view.backgroundColor = [UIColor greenColor]; }];
     [self.actionSheet addButtonWithTitle: @"Blue"   block: ^{ bself.view.backgroundColor = [UIColor blueColor]; }];
     [self.actionSheet addButtonWithTitle: @"Purple" block: ^{ bself.view.backgroundColor = [UIColor purpleColor]; }];
-    [self.actionSheet addButtonWithTitle: @"Cancel" block: nil];
+    [self.actionSheet setCancelButtonWithTitle:@"Cancel" block:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -39,11 +39,11 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)changeBackgroundWasTapped:(id)sender
+- (IBAction)changeBackgroundWasTapped:(UIButton *)sender
 {
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-        [self.actionSheet showFromView:self.changeBackgroundButton inView:self.view animated:YES];
+        [self.actionSheet showFromView:sender inView:self.view animated:YES];
     }
     else {
         [self.actionSheet showInView:self.view];
