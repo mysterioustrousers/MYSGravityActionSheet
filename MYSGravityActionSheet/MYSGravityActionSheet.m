@@ -111,7 +111,7 @@ typedef void (^ActionBlock)();
     self.padding                = 8;
     self.paddingBottom          = 8;
     self.paddingCancelButton    = 5;
-    self.buttonHeight           = 40;
+    self.buttonHeight           = 48;
     self.magnitude              = 3.0;
     self.elasticity             = 0.55;
     self.force                  = -100;                 // applies force to items above selected item
@@ -199,7 +199,9 @@ typedef void (^ActionBlock)();
     UIView *buttonContainer = [UIView new];
     buttonContainer.tag     = MYSGravityActionSheetButtonTypeCancel;
     [self addSubview:buttonContainer];
-    [buttonContainer addSubview:[self buttonWithTitle:title textColor:nil]];
+    UIButton *button = [self buttonWithTitle:title textColor:nil];
+    button.titleLabel.font = [UIFont boldSystemFontOfSize:button.titleLabel.font.pointSize];
+    [buttonContainer addSubview:button];
     
     [self.buttons addObject:buttonContainer];
 }
@@ -444,7 +446,7 @@ typedef void (^ActionBlock)();
 {
     UIButton *button            = [UIButton buttonWithType:UIButtonTypeSystem];
     button.backgroundColor      = [UIColor colorWithWhite:1.0 alpha:0.9];
-    button.titleLabel.font      = [UIFont systemFontOfSize:15];
+    button.titleLabel.font      = [UIFont systemFontOfSize:22];
     [button setTitle:title forState:UIControlStateNormal];
     [button addTarget:self action:@selector(buttonWasTapped:) forControlEvents:UIControlEventTouchDown];
     if (color)
