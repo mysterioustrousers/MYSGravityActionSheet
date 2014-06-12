@@ -46,11 +46,32 @@ typedef void (^ActionBlock)();
 
 
 
-- (void)showFromBarButtonItem:(UIBarButtonItem *)item inView:(UIView *)view animated:(BOOL)animated
+- (void)showFromBarButtonItem:(UIBarButtonItem *)item animated:(BOOL)animated
 {
-    [self.popover presentPopoverFromBarButtonItem:item permittedArrowDirections:UIPopoverArrowDirectionAny animated:animated];
-    [self showInView:self.popover.contentViewController.view];
-    [self adjustPopoverLayout];
+    UIView *view                   = [UIApplication sharedApplication].keyWindow;
+    NSUInteger i                   = 0;
+    NSMutableArray *collectedViews = [[view subviews] mutableCopy];
+    while(i < [collectedViews count]) {
+        view = collectedViews[i++];
+        [collectedViews addObjectsFromArray:[view subviews]];
+    }
+
+    for (UIView *v in collectedViews) {
+        if ([v isKindOfClass:[UIToolbar class]]) {
+            UIToolbar *toolbar = (UIToolbar *)v;
+            if ([toolbar.items containsObject:item]) {
+                NSMutableArray* buttons = [[NSMutableArray alloc] init];
+                for (UIControl* button in toolbar.subviews) {
+                    if ([button isKindOfClass:[UIControl class]]) {
+                        [buttons addObject:button];
+                    }
+                }
+                UIView *barButtonItem = [buttons objectAtIndex:[toolbar.items indexOfObject:item]];
+                UIView *container = [toolbar superview];
+                [self showFromView:barButtonItem inView:container animated:animated];
+            }
+        }
+    }
 }
 
 - (void)showFromView:(UIView *)fromView inView:(UIView *)inView animated:(BOOL)animated

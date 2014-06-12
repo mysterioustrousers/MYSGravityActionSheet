@@ -16,7 +16,7 @@
 - (void)showInView:(UIView *)view;
 // iPad
 - (void)showFromView:(UIView *)fromView inView:(UIView *)inView animated:(BOOL)animated;
-- (void)showFromBarButtonItem:(UIBarButtonItem *)item inView:(UIView *)view animated:(BOOL)animated;
+- (void)showFromBarButtonItem:(UIBarButtonItem *)item animated:(BOOL)animated;
 
 
 - (void)addButtonWithTitle:(NSString *)title block:(void (^)(void))block;
