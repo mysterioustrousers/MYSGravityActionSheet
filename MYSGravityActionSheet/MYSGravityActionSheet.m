@@ -48,30 +48,70 @@ typedef void (^ActionBlock)();
 
 - (void)showFromBarButtonItem:(UIBarButtonItem *)item animated:(BOOL)animated
 {
-    UIView *view                   = [UIApplication sharedApplication].keyWindow;
-    NSUInteger i                   = 0;
-    NSMutableArray *collectedViews = [[view subviews] mutableCopy];
-    while(i < [collectedViews count]) {
-        view = collectedViews[i++];
-        [collectedViews addObjectsFromArray:[view subviews]];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        UIActionSheet *actionSheet = [UIActionSheet new];
+        [actionSheet addButtonWithTitle:@"blah"];
+        [actionSheet showFromBarButtonItem:item animated:NO];
+        UIView *inView = [[[[actionSheet superview] superview] superview] superview];
+        CGRect rect = [actionSheet.superview convertRect:actionSheet.frame toView:inView];
+        rect.size.width = 1;
+        rect.size.height = 1;
+        UIView *v = [[UIView alloc] initWithFrame:rect];
+        [inView addSubview:v];
+        [actionSheet dismissWithClickedButtonIndex:0 animated:NO];
+        [self showFromView:v inView:inView animated:YES];
     }
-
-    for (UIView *v in collectedViews) {
-        if ([v isKindOfClass:[UIToolbar class]]) {
-            UIToolbar *toolbar = (UIToolbar *)v;
-            if ([toolbar.items containsObject:item]) {
-                NSMutableArray* buttons = [[NSMutableArray alloc] init];
-                for (UIControl* button in toolbar.subviews) {
-                    if ([button isKindOfClass:[UIControl class]]) {
-                        [buttons addObject:button];
-                    }
-                }
-                UIView *barButtonItem = [buttons objectAtIndex:[toolbar.items indexOfObject:item]];
-                UIView *container = [toolbar superview];
-                [self showFromView:barButtonItem inView:container animated:animated];
-            }
-        }
-    }
+//    UIView *view                   = [UIApplication sharedApplication].keyWindow;
+//    NSUInteger i                   = 0;
+//    NSMutableArray *collectedViews = [[view subviews] mutableCopy];
+//    while(i < [collectedViews count]) {
+//        view = collectedViews[i++];
+//        [collectedViews addObjectsFromArray:[view subviews]];
+//    }
+//
+////    item.customView = [UIView new];
+////    NSLog(@"%@", item.customView.superview);
+//
+//    for (UIView *v in collectedViews) {
+//        if ([v isKindOfClass:[UIToolbar class]] || [v isKindOfClass:[UINavigationBar class]]) {
+//
+//            UIView *view = v;
+//            NSUInteger i = 0;
+//            NSMutableArray *possibleButtons = [[view subviews] mutableCopy];
+//            while(i < [possibleButtons count]) {
+//                view = possibleButtons[i++];
+//                [possibleButtons addObjectsFromArray:[view subviews]];
+//            }
+//
+//            NSMutableArray *buttons = [NSMutableArray new];
+//            for (UIControl *button in possibleButtons) {
+//                if ([button isKindOfClass:[UIControl class]]) {
+//                    [buttons addObject:button];
+//                }
+//            }
+//
+//
+//            if ([v isKindOfClass:[UIToolbar class]]) {
+//                [[(UIToolbar *)v items] containsObject:item];
+//            }
+//            else {
+//                UINavigationItem *navigationItem = [[(UINavigationBar *)v items] lastObject];
+//                if (navigationItem.backBarButtonItem == item) {
+//                }
+//            }
+//            
+//                NSMutableArray* buttons = [[NSMutableArray alloc] init];
+//                for (UIControl* button in toolbar.subviews) {
+//                    if ([button isKindOfClass:[UIControl class]]) {
+//                        [buttons addObject:button];
+//                    }
+//                }
+//                UIView *barButtonItem = [buttons objectAtIndex:[toolbar.items indexOfObject:item]];
+//                UIView *container = [toolbar superview];
+//                [self showFromView:barButtonItem inView:container animated:animated];
+//            }
+//        }
+//    }
 }
 
 - (void)showFromView:(UIView *)fromView inView:(UIView *)inView animated:(BOOL)animated
