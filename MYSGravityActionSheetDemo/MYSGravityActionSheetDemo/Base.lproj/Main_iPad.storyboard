@@ -58,6 +58,19 @@
                                     <action selector="changeBackgroundWasTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="IR5-XI-r1h"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6vx-Na-T2o">
+                                <rect key="frame" x="295" y="496" width="10" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="10" id="oYs-oe-Y8b"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
+                                <state key="normal" title="C"/>
+                                <connections>
+                                    <action selector="changeBackgroundWasTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="YbU-yb-eIx"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YWR-FH-ct9">
                                 <rect key="frame" x="313" y="974" width="143" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -84,11 +97,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="VuA-Gr-MZt" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="97s-5H-GDJ"/>
+                            <constraint firstItem="6vx-Na-T2o" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="496" id="CJI-2J-YeB"/>
                             <constraint firstItem="VuA-Gr-MZt" firstAttribute="baseline" secondItem="3pB-7Y-B03" secondAttribute="baseline" id="DvG-Th-dpX"/>
                             <constraint firstItem="VuA-Gr-MZt" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="Nfp-8E-Iy5"/>
                             <constraint firstItem="3Ok-Uh-JoR" firstAttribute="top" secondItem="15e-lm-aN2" secondAttribute="bottom" id="S7o-No-wXc"/>
                             <constraint firstItem="15e-lm-aN2" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="WVZ-ea-8mw"/>
                             <constraint firstAttribute="bottom" secondItem="YWR-FH-ct9" secondAttribute="bottom" constant="20" symbolic="YES" id="XcJ-8R-sMQ"/>
+                            <constraint firstItem="6vx-Na-T2o" firstAttribute="leading" secondItem="3pB-7Y-B03" secondAttribute="leading" constant="-310" id="YXU-Qm-TmD"/>
                             <constraint firstAttribute="trailing" secondItem="3pB-7Y-B03" secondAttribute="trailing" constant="20" symbolic="YES" id="bA7-C3-UAq"/>
                             <constraint firstAttribute="centerX" secondItem="3Ok-Uh-JoR" secondAttribute="centerX" constant="-0.5" id="nIw-4L-c54"/>
                             <constraint firstAttribute="trailing" secondItem="15e-lm-aN2" secondAttribute="trailing" id="obo-y3-SQ0"/>

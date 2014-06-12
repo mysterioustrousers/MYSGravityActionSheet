@@ -21,7 +21,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+
     self.actionSheet = [[MYSGravityActionSheet alloc] init];
     __weak UIViewController *bself = self;
     [self.actionSheet setDestructiveButtonWithTitle: @"Red"    block: ^{ bself.view.backgroundColor = [UIColor redColor]; }];

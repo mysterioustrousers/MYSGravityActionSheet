@@ -25,10 +25,10 @@
 {
     CGRect bounds = self.bounds;
     if (posX > bounds.size.width) {
-        posX = bounds.size.width;
+        posX = bounds.size.width - ARROW_BASE - self.roundCornerOffset;
     }
     else if (posX < 0)
-        posX = 0;
+        posX = 0 + self.roundCornerOffset;
     _posX = posX;
     [self setNeedsDisplay];
 }
@@ -68,8 +68,21 @@
     }
     CGContextClosePath(ctx);
     CGContextFillPath(ctx);
-    
-    
-    
 }
+
+
+
+
+#pragma mark - Getters
+
+- (CGFloat)arrowBase
+{
+    return ARROW_BASE;
+}
+
+- (CGFloat)arrowHeight
+{
+    return ARROW_HEIGHT;
+}
+
 @end
