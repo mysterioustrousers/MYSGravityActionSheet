@@ -36,7 +36,8 @@ typedef void (^ActionBlock)();
 @property (nonatomic, assign) CGFloat             separationDistance;
 @property (nonatomic, strong) UIPopoverController *popover;
 @property (nonatomic, weak  ) UIView              *presentInView;
-@property (nonatomic, weak  ) UIView              *presentFromView;
+@property (nonatomic, strong) UIView              *presentFromView;
+@property (nonatomic, strong) UIBarButtonItem     *presentFromBarButton;
 @property (nonatomic, strong) UIView              *buttonView;
 @property (nonatomic, assign) CGRect              displayRect;
 @property (nonatomic, strong) MYSGravityArrowView *arrowView;
@@ -48,72 +49,33 @@ typedef void (^ActionBlock)();
 
 
 
-- (void)showFromBarButtonItem:(UIBarButtonItem *)item animated:(BOOL)animated
+- (void)showFromBarButtonItem:(UIBarButtonItem *)item inView:(UIView *)inView animated:(BOOL)animated
 {
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        UIActionSheet *actionSheet = [UIActionSheet new];
-        [actionSheet addButtonWithTitle:@"blah"];
-        [actionSheet showFromBarButtonItem:item animated:NO];
-        UIView *inView = [[[[actionSheet superview] superview] superview] superview];
-        CGRect rect = [actionSheet.superview convertRect:actionSheet.frame toView:inView];
-        rect.size.width = 1;
-        rect.size.height = 1;
-        UIView *v = [[UIView alloc] initWithFrame:rect];
-        [inView addSubview:v];
-        [actionSheet dismissWithClickedButtonIndex:0 animated:NO];
-        [self showFromView:v inView:inView animated:YES];
+    
+    
+    self.presentFromBarButton = item;
+    self.presentInView      = inView;
+    
+    if (self.arrowView == nil) {
+        self.arrowView= [MYSGravityArrowView new];
+        self.arrowView.backgroundColor = [UIColor clearColor];
+        [self addSubview:self.arrowView];
     }
-//    UIView *view                   = [UIApplication sharedApplication].keyWindow;
-//    NSUInteger i                   = 0;
-//    NSMutableArray *collectedViews = [[view subviews] mutableCopy];
-//    while(i < [collectedViews count]) {
-//        view = collectedViews[i++];
-//        [collectedViews addObjectsFromArray:[view subviews]];
-//    }
-//
-////    item.customView = [UIView new];
-////    NSLog(@"%@", item.customView.superview);
-//
-//    for (UIView *v in collectedViews) {
-//        if ([v isKindOfClass:[UIToolbar class]] || [v isKindOfClass:[UINavigationBar class]]) {
-//
-//            UIView *view = v;
-//            NSUInteger i = 0;
-//            NSMutableArray *possibleButtons = [[view subviews] mutableCopy];
-//            while(i < [possibleButtons count]) {
-//                view = possibleButtons[i++];
-//                [possibleButtons addObjectsFromArray:[view subviews]];
-//            }
-//
-//            NSMutableArray *buttons = [NSMutableArray new];
-//            for (UIControl *button in possibleButtons) {
-//                if ([button isKindOfClass:[UIControl class]]) {
-//                    [buttons addObject:button];
-//                }
-//            }
-//
-//
-//            if ([v isKindOfClass:[UIToolbar class]]) {
-//                [[(UIToolbar *)v items] containsObject:item];
-//            }
-//            else {
-//                UINavigationItem *navigationItem = [[(UINavigationBar *)v items] lastObject];
-//                if (navigationItem.backBarButtonItem == item) {
-//                }
-//            }
-//            
-//                NSMutableArray* buttons = [[NSMutableArray alloc] init];
-//                for (UIControl* button in toolbar.subviews) {
-//                    if ([button isKindOfClass:[UIControl class]]) {
-//                        [buttons addObject:button];
-//                    }
-//                }
-//                UIView *barButtonItem = [buttons objectAtIndex:[toolbar.items indexOfObject:item]];
-//                UIView *container = [toolbar superview];
-//                [self showFromView:barButtonItem inView:container animated:animated];
-//            }
-//        }
-//    }
+    
+    [self showInView:self.presentInView];
+    UIView *view = [item valueForKey:@"view"];
+    CGRect frame = (view != nil) ? view.frame : CGRectZero;
+    CGRect itemRect             = [self.superview convertRect:frame fromView:inView];
+    self.presentFromView   = [[UIView alloc] initWithFrame:itemRect];
+    [self adjustPopoverLayout];
+    
+    // HACK leech off the popover's rect but don't actually use the popover (present popover so rect is set, then immediately dismiss)
+    [self.popover presentPopoverFromBarButtonItem:item permittedArrowDirections:UIPopoverArrowDirectionDown | UIPopoverArrowDirectionUp animated:NO];
+    self.arrowView.arrowDirection   = self.popover.popoverArrowDirection;
+    CGRect pt1                      = [self.popover.contentViewController.view convertRect:self.popover.contentViewController.view.frame toView:self.superview];
+    self.displayRect                = pt1;
+    
+    [self.popover dismissPopoverAnimated:NO];
 }
 
 - (void)showFromView:(UIView *)fromView inView:(UIView *)inView animated:(BOOL)animated
@@ -485,6 +447,9 @@ typedef void (^ActionBlock)();
 {
     [self.animator removeAllBehaviors];
     self.animator = nil;
+    self.presentFromView = nil;
+    self.presentFromBarButton = nil;
+    self.presentInView = nil;
     [self removeFromSuperview];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -529,14 +494,18 @@ typedef void (^ActionBlock)();
     
     // Place the arrow
     CGRect arrowRect        = [self.superview convertRect:self.arrowView.bounds fromView:self.arrowView];
-    CGRect presentViewRect  = [self.superview convertRect:self.presentFromView.bounds fromView:self.presentFromView];
+    CGRect presentViewRect;
+    if (self.presentFromBarButton)
+        presentViewRect = self.presentFromView.frame;
+    else
+        presentViewRect = [self.superview convertRect:self.presentFromView.bounds fromView:self.presentFromView];
     double offsetX          = presentViewRect.origin.x - arrowRect.origin.x + presentViewRect.size.width/2 - self.arrowView.arrowBase/2 ;
     self.arrowView.posX     = offsetX;
 }
 
 - (void)orientationChanged:(id)sender
 {
-    if (self.popover) {
+    if (self.popover && self.presentFromBarButton == nil) {
         [self.popover presentPopoverFromRect:self.presentFromView.frame inView:self.presentInView permittedArrowDirections:UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown animated:NO];
         CGRect pt1                      = [self.popover.contentViewController.view convertRect:self.popover.contentViewController.view.bounds toView:self.presentInView];
         self.arrowView.arrowDirection   = self.popover.popoverArrowDirection;
@@ -544,6 +513,15 @@ typedef void (^ActionBlock)();
 
         self.displayRect = pt1;
     }
+    else if (self.popover && self.presentFromBarButton) {
+        [self.popover presentPopoverFromBarButtonItem:self.presentFromBarButton permittedArrowDirections:UIPopoverArrowDirectionDown | UIPopoverArrowDirectionUp animated:NO];
+        self.arrowView.arrowDirection   = self.popover.popoverArrowDirection;
+        CGRect pt1                      = [self.popover.contentViewController.view convertRect:self.popover.contentViewController.view.frame toView:self.superview];
+        self.displayRect                = pt1;
+        
+    }
+    
+    [self.popover dismissPopoverAnimated:NO];
     self.animator = nil;
     [self setNeedsLayout];
 }
@@ -672,6 +650,12 @@ typedef void (^ActionBlock)();
             [buttonContainer setFrame: CGRectMake(prevRect.origin.x, prevRect.origin.y - prevRect.size.height + self.buttonLineHeight, prevRect.size.width, prevRect.size.height)];
         }
         prevRect = buttonContainer.frame;
+    }
+    
+    if (self.arrowView.arrowDirection == UIPopoverArrowDirectionUp) {
+        CGRect frame = self.arrowView.frame;
+        frame.origin.y = prevRect.origin.y  - frame.size.height + self.buttonLineHeight;
+        self.arrowView.frame = frame;
     }
 }
 
