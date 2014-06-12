@@ -17,11 +17,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Ok-Uh-JoR">
-                                <rect key="frame" x="313" y="44" width="143" height="30"/>
+                                <rect key="frame" x="313" y="62" width="143" height="16"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="143" id="IEG-GC-Tlj"/>
+                                    <constraint firstAttribute="height" constant="16" id="rGX-XR-QFc"/>
                                 </constraints>
                                 <state key="normal" title="Change Background">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -42,6 +41,20 @@
                                 </state>
                                 <connections>
                                     <action selector="changeBackgroundWasTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Crc-Rh-Glh"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e49-hy-sA4">
+                                <rect key="frame" x="20" y="176" width="143" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="143" id="vGg-9w-TX6"/>
+                                </constraints>
+                                <state key="normal" title="Change Background">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="changeBackgroundWasTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aBE-QG-mya"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3pB-7Y-B03">
@@ -75,6 +88,9 @@
                                 <rect key="frame" x="313" y="974" width="143" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="143" id="1Vv-Ri-YRb"/>
+                                </constraints>
                                 <state key="normal" title="Change Background">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -96,20 +112,22 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="3Ok-Uh-JoR" firstAttribute="top" secondItem="15e-lm-aN2" secondAttribute="bottom" constant="18" id="0bc-DU-yoe"/>
                             <constraint firstItem="VuA-Gr-MZt" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="97s-5H-GDJ"/>
                             <constraint firstItem="6vx-Na-T2o" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="496" id="CJI-2J-YeB"/>
+                            <constraint firstItem="YWR-FH-ct9" firstAttribute="leading" secondItem="3Ok-Uh-JoR" secondAttribute="leading" id="DiU-mR-XxE"/>
                             <constraint firstItem="VuA-Gr-MZt" firstAttribute="baseline" secondItem="3pB-7Y-B03" secondAttribute="baseline" id="DvG-Th-dpX"/>
                             <constraint firstItem="VuA-Gr-MZt" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="Nfp-8E-Iy5"/>
-                            <constraint firstItem="3Ok-Uh-JoR" firstAttribute="top" secondItem="15e-lm-aN2" secondAttribute="bottom" id="S7o-No-wXc"/>
                             <constraint firstItem="15e-lm-aN2" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="WVZ-ea-8mw"/>
                             <constraint firstAttribute="bottom" secondItem="YWR-FH-ct9" secondAttribute="bottom" constant="20" symbolic="YES" id="XcJ-8R-sMQ"/>
+                            <constraint firstItem="YWR-FH-ct9" firstAttribute="centerX" secondItem="15e-lm-aN2" secondAttribute="centerX" id="YVg-C7-815"/>
                             <constraint firstItem="6vx-Na-T2o" firstAttribute="leading" secondItem="3pB-7Y-B03" secondAttribute="leading" constant="-310" id="YXU-Qm-TmD"/>
+                            <constraint firstItem="e49-hy-sA4" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="176" id="Z4G-7X-gm9"/>
                             <constraint firstAttribute="trailing" secondItem="3pB-7Y-B03" secondAttribute="trailing" constant="20" symbolic="YES" id="bA7-C3-UAq"/>
-                            <constraint firstAttribute="centerX" secondItem="3Ok-Uh-JoR" secondAttribute="centerX" constant="-0.5" id="nIw-4L-c54"/>
+                            <constraint firstItem="YWR-FH-ct9" firstAttribute="trailing" secondItem="3Ok-Uh-JoR" secondAttribute="trailing" id="lRI-dB-2Uk"/>
+                            <constraint firstItem="e49-hy-sA4" firstAttribute="leading" secondItem="VuA-Gr-MZt" secondAttribute="leading" id="nhk-Uy-5B5"/>
                             <constraint firstAttribute="trailing" secondItem="15e-lm-aN2" secondAttribute="trailing" id="obo-y3-SQ0"/>
                             <constraint firstItem="15e-lm-aN2" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="tLW-ni-lxx"/>
-                            <constraint firstItem="3Ok-Uh-JoR" firstAttribute="trailing" secondItem="YWR-FH-ct9" secondAttribute="trailing" id="uCy-2O-Etm"/>
-                            <constraint firstItem="3Ok-Uh-JoR" firstAttribute="leading" secondItem="YWR-FH-ct9" secondAttribute="leading" id="xgd-GA-czz"/>
                         </constraints>
                     </view>
                     <connections>
