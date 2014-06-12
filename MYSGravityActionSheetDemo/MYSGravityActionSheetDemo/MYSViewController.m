@@ -52,7 +52,8 @@
 
 - (IBAction)barButtonWasTapped:(UIBarButtonItem *)sender
 {
-    [self.actionSheet showFromBarButtonItem:sender animated:YES];
+    //[self.actionSheet showFromBarButtonItem:sender animated:YES];
+    [self.actionSheet showFromBarButtonItem:sender inView:self.view animated:YES];
     
     
 }
