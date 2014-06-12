@@ -284,33 +284,34 @@ typedef void (^ActionBlock)();
     
     // A rect on the bottom of the superview to detect when the last visable view is leaving. Then fade the backdrop.
     // TODO looks awful with bottom buttons on iPhone and  when popup is near bottom on iPad
-   
-    CGFloat height          = self.superview.bounds.size.height * 0.30;
-    CGRect superview        = self.superview.bounds;
-    CGRect bottom           = CGRectMake(superview.origin.x, superview.size.height - height, superview.size.width, height);
-    CGRect top              = CGRectMake(superview.origin.x, superview.origin.y, superview.size.width, height);
-    CGRect dismissDetect    = isDropViewSelected ? top : bottom;
-    
-    
+
     if (self.reorderedButtons.count > 0) {
         UIView *lastVisableView             = self.reorderedButtons[buttonIndex];
         __block BOOL isAnimatingBackDrop    = NO;
         UIDynamicItemBehavior *dynamic      = [[UIDynamicItemBehavior alloc] initWithItems:@[lastVisableView]];
         dynamic.action = ^{
-            if (!CGRectIntersectsRect(lastVisableView.superview.bounds, lastVisableView.frame)) {
+            for (UIDynamicBehavior *behavior in self.animator.behaviors) {
+                for (UIView *view in [(UIPushBehavior *)behavior items]) {
+                    CGRect frameInWindow = [view.superview convertRect:view.frame toView:nil];
+                    if (CGRectIntersectsRect(frameInWindow, view.window.frame)) {
+                        return;
+                    }
+                }
+            }
+            [self.animator removeAllBehaviors];
+
+            if (isAnimatingBackDrop) return;
+            isAnimatingBackDrop = YES;
+
+            [UIView animateWithDuration:0.3 animations:^{
+                self.backgroundColor = [UIColor clearColor];
+            } completion:^(BOOL finished) {
                 [self removeAnimationAndView];
                 self.visible = NO;
                 NSString *key       = button.titleLabel.text;
                 ActionBlock block   = self.buttonBlockDictionary[key];
                 if (block) block();
-            }
-            if (CGRectIntersectsRect(dismissDetect, lastVisableView.frame)) {
-                if (isAnimatingBackDrop) return;
-                isAnimatingBackDrop = YES;
-                [UIView animateWithDuration:0.3 animations:^{
-                    self.backgroundColor = [UIColor clearColor];
-                }];
-            }
+            }];
         };
         
         [self.animator addBehavior:dynamic];
