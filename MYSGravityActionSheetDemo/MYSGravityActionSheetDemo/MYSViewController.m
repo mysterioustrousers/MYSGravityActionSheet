@@ -24,10 +24,10 @@
 
     self.actionSheet = [[MYSGravityActionSheet alloc] init];
     __weak UIViewController *bself = self;
-    [self.actionSheet setDestructiveButtonWithTitle: @"Red"    block: ^{ bself.view.backgroundColor = [UIColor redColor]; }];
     [self.actionSheet addButtonWithTitle: @"Orange" block: ^{ bself.view.backgroundColor = [UIColor orangeColor]; }];
     [self.actionSheet addButtonWithTitle: @"Yellow" block: ^{ bself.view.backgroundColor = [UIColor yellowColor]; }];
     [self.actionSheet addButtonWithTitle: @"Green"  block: ^{ bself.view.backgroundColor = [UIColor greenColor]; }];
+    [self.actionSheet setDestructiveButtonWithTitle: @"Red"    block: ^{ bself.view.backgroundColor = [UIColor redColor]; }];
     [self.actionSheet addButtonWithTitle: @"Blue"   block: ^{ bself.view.backgroundColor = [UIColor blueColor]; }];
     [self.actionSheet addButtonWithTitle: @"Purple" block: ^{ bself.view.backgroundColor = [UIColor purpleColor]; }];
     [self.actionSheet setCancelButtonWithTitle:@"Cancel" block:nil];
