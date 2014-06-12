@@ -51,22 +51,19 @@ typedef void (^ActionBlock)();
 
 - (void)showFromBarButtonItem:(UIBarButtonItem *)item inView:(UIView *)inView animated:(BOOL)animated
 {
-    
-    
-    self.presentFromBarButton = item;
-    self.presentInView      = inView;
+    self.presentFromBarButton   = item;
+    self.presentInView          = inView;
     
     if (self.arrowView == nil) {
-        self.arrowView= [MYSGravityArrowView new];
-        self.arrowView.backgroundColor = [UIColor clearColor];
+        self.arrowView                  = [MYSGravityArrowView new];
+        self.arrowView.backgroundColor  = [UIColor clearColor];
         [self addSubview:self.arrowView];
     }
     
     [self showInView:self.presentInView];
-    UIView *view = [item valueForKey:@"view"];
-    CGRect frame = (view != nil) ? view.frame : CGRectZero;
-    CGRect itemRect             = [self.superview convertRect:frame fromView:inView];
-    self.presentFromView   = [[UIView alloc] initWithFrame:itemRect];
+    
+    UIView *view            = [item valueForKey:@"view"];
+    self.presentFromView    = view;
     [self adjustPopoverLayout];
     
     // HACK leech off the popover's rect but don't actually use the popover (present popover so rect is set, then immediately dismiss)
@@ -93,7 +90,7 @@ typedef void (^ActionBlock)();
     [self adjustPopoverLayout];
     
     // HACK leech off the popover's rect but don't actually use the popover (present popover so rect is set, then immediately dismiss)
-    [self.popover presentPopoverFromRect:fromView.frame inView:inView permittedArrowDirections:UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown animated:YES];
+    [self.popover presentPopoverFromRect:fromView.frame inView:inView permittedArrowDirections:UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown animated:NO];
     self.arrowView.arrowDirection   = self.popover.popoverArrowDirection;
     CGRect pt1                      = [self.popover.contentViewController.view convertRect:self.popover.contentViewController.view.frame toView:inView];
     self.displayRect                = pt1;
@@ -104,7 +101,7 @@ typedef void (^ActionBlock)();
 - (void)adjustPopoverLayout
 {
     // TODO determine width dynamically or something..
-    [self.popover setPopoverContentSize:CGSizeMake(250, self.buttons.count * self.buttonHeight) animated:NO];
+    [self.popover setPopoverContentSize:CGSizeMake(250, self.buttons.count * (self.buttonHeight - self.buttonLineHeight) + self.buttonLineHeight) animated:NO];
 }
 
 - (void)showInView:(UIView *)view
@@ -163,7 +160,7 @@ typedef void (^ActionBlock)();
     for (int i = 0; i < self.buttons.count; i++) {
         UIView *buttonContainer = [self.reorderedButtons objectAtIndex:i];
         if (self.popover) {
-            buttonContainer.frame = CGRectMake(bounds.origin.x , self.bounds.origin.y + (self.buttonHeight + self.separationDistance)* ((i + 1) * -1), bounds.size.width , self.buttonHeight);
+            buttonContainer.frame = CGRectMake(bounds.origin.x , self.bounds.origin.y + (self.buttonHeight + self.separationDistance)* ((i + 1) * -1), bounds.size.width, self.buttonHeight);
         }
         else {
             buttonContainer.frame = CGRectMake(bounds.origin.x + self.padding , self.bounds.origin.y + (self.buttonHeight + self.separationDistance) * ((i + 1) * -1), bounds.size.width - self.padding * 2, self.buttonHeight);
@@ -173,7 +170,6 @@ typedef void (^ActionBlock)();
         UIButton *button    = [[buttonContainer subviews] lastObject];
         button.frame        = CGRectInset(buttonContainer.bounds, 0, self.buttonLineHeight);
     }
-    
     
     [self roundButtonCornersAndCancelButtonPadding];
     
@@ -475,13 +471,10 @@ typedef void (^ActionBlock)();
     switch (self.arrowView.arrowDirection) {
         case UIPopoverArrowDirectionUp:
             placement           = (int)self.buttons.count;
-            CGRect adjustment   = self.displayRect;
-            adjustment.origin.y-= arrowViewHeight;
-            self.displayRect    = adjustment;
             break;
         case UIPopoverArrowDirectionDown:
             placement           = 0;
-            adjustment          = self.displayRect;
+            CGRect adjustment   = self.displayRect;
             adjustment.origin.y+= arrowViewHeight;
             self.displayRect    = adjustment;
             break;
@@ -613,7 +606,7 @@ typedef void (^ActionBlock)();
     
     UICollisionBehavior *collision  = [[UICollisionBehavior alloc] initWithItems: items];
     [collision addBoundaryWithIdentifier:@"floor"
-                               fromPoint: bottomLeftCorner
+                               fromPoint: bottomLeftCorner 
                                  toPoint: bottomRightCorner];
     
     [collision addBoundaryWithIdentifier:@"leftside"
@@ -656,6 +649,15 @@ typedef void (^ActionBlock)();
         CGRect frame = self.arrowView.frame;
         frame.origin.y = prevRect.origin.y  - frame.size.height + self.buttonLineHeight;
         self.arrowView.frame = frame;
+    }
+    else if (self.arrowView.arrowDirection == UIPopoverArrowDirectionDown) {
+        CGRect frame = self.arrowView.frame;
+        
+        if (self.reorderedButtons.count > 0) {
+            UIView *bottomButton = [self.reorderedButtons firstObject];
+            frame.origin.y = bottomButton.frame.origin.y  + bottomButton.frame.size.height - self.buttonLineHeight - 0.1; // 0.1 for just a little overlap
+            self.arrowView.frame = frame;
+        }
     }
 }
 
