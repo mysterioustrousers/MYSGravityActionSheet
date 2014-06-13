@@ -12,7 +12,7 @@
 @property (nonatomic,         readwrite) UIPopoverArrowDirection arrowDirection;
 @property (nonatomic, assign           ) CGFloat                 posX;
 @property (nonatomic, assign           ) CGFloat                 posY;
-@property (nonatomic,         readonly ) CGFloat                 arrowBase;
-@property (nonatomic,         readonly ) CGFloat                 arrowHeight;
 @property (nonatomic,         readwrite) CGFloat                 roundCornerOffset;
++ (CGFloat)arrowHeight;
++ (CGFloat)arrowBase;
 @end
