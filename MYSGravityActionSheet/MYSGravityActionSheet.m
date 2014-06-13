@@ -7,13 +7,18 @@
 //
 
 
+#define PAD UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad
+
+
 typedef NS_ENUM(NSInteger, MYSGravityActionSheetButtonType) {
     MYSGravityActionSheetButtonTypeNormal       = 0,
     MYSGravityActionSheetButtonTypeCancel       = 1,
     MYSGravityActionSheetButtonTypeDestructive  = 2,
 };
 
+
 typedef void (^ActionBlock)();
+
 
 #import "MYSGravityActionSheet.h"
 #import "MYSGravityArrowView.h"
@@ -115,10 +120,10 @@ typedef void (^ActionBlock)();
     self.buttonHeight           = 48;
     self.magnitude              = 3.0;
     self.elasticity             = 0.55;
-    self.force                  = -100; // applies force to items above selected item
+    self.force                  = PAD ? -200 : -100; // applies force to items above selected item
     self.isDismissing           = NO;
     self.buttonLineHeight       = 2;
-    self.separationDistance     = 0;   // The distance each button is apart before they start to fall
+    self.separationDistance     = 10;   // The distance each button is apart before they start to fall
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapped:)];
     [self addGestureRecognizer:tap];
@@ -134,7 +139,7 @@ typedef void (^ActionBlock)();
     
     self.backgroundColor = [UIColor clearColor];
     [UIView animateWithDuration:0.5 animations:^{
-        self.backgroundColor =[UIColor colorWithWhite:0.0 alpha:0.2];
+        self.backgroundColor =[UIColor colorWithWhite:0.0 alpha:0.3];
     }];
     
     [self startOrientationObserving];
@@ -248,11 +253,11 @@ typedef void (^ActionBlock)();
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         UIGravityBehavior *gravityBehavior  = [[UIGravityBehavior alloc] init];
-        gravityBehavior.magnitude           = self.magnitude;
+        gravityBehavior.magnitude           = self.magnitude * (PAD ? 10 : 1);
         dispatch_async(dispatch_get_main_queue(), ^{
             
             // Animate arrow depending on direction
-            if (self.arrowView.arrowDirection == UIPopoverArrowDirectionUp || (isDropViewSelected && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)) {
+            if (self.arrowView.arrowDirection == UIPopoverArrowDirectionUp || (isDropViewSelected && PAD)) {
                 UIPushBehavior *pushBehavior    = [[UIPushBehavior alloc] initWithItems:@[self.arrowView] mode:UIPushBehaviorModeContinuous];
                 pushBehavior.pushDirection      = CGVectorMake(0, self.force);
                 [self.animator addBehavior:pushBehavior];
@@ -361,7 +366,7 @@ typedef void (^ActionBlock)();
 
 - (UIPopoverController *)popover
 {
-    if (_popover == nil && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+    if (_popover == nil && PAD) {
         UIViewController *viewController = [UIViewController new];
         _popover = [[UIPopoverController alloc] initWithContentViewController:viewController];
         [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
@@ -453,7 +458,7 @@ typedef void (^ActionBlock)();
 - (UIButton *)buttonWithTitle:(NSString *)title textColor:(UIColor *)color
 {
     UIButton *button            = [UIButton buttonWithType:UIButtonTypeSystem];
-    button.backgroundColor      = [UIColor colorWithWhite:1.0 alpha:0.9];
+    button.backgroundColor      = [UIColor colorWithWhite:1.0 alpha:0.95];
     button.titleLabel.font      = [UIFont systemFontOfSize:22];
     [button setTitle:title forState:UIControlStateNormal];
     [button addTarget:self action:@selector(buttonWasTapped:) forControlEvents:UIControlEventTouchDown];
