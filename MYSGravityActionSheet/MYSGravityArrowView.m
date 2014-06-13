@@ -75,12 +75,12 @@
 
 #pragma mark - Getters
 
-- (CGFloat)arrowBase
++ (CGFloat)arrowBase
 {
     return ARROW_BASE;
 }
 
-- (CGFloat)arrowHeight
++ (CGFloat)arrowHeight
 {
     return ARROW_HEIGHT;
 }
