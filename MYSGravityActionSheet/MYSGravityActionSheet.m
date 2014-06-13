@@ -25,28 +25,29 @@ typedef void (^ActionBlock)();
 
 
 @interface MYSGravityActionSheet () <UIDynamicAnimatorDelegate>
-@property (nonatomic, strong) UIDynamicAnimator   *animator;
-@property (nonatomic, strong) NSMutableArray      *buttons;
-@property (nonatomic, strong) NSArray             *reorderedButtons;
-@property (nonatomic, strong) NSMutableArray      *buttonTitles;
-@property (nonatomic, retain) NSMutableDictionary *buttonBlockDictionary;
-@property (nonatomic, assign) int                 padding;
-@property (nonatomic, assign) int                 paddingBottom;
-@property (nonatomic, assign) int                 paddingCancelButton;
-@property (nonatomic, assign) CGFloat             buttonHeight;
-@property (nonatomic, assign) CGFloat             magnitude;
-@property (nonatomic, assign) CGFloat             elasticity;
-@property (nonatomic, assign) CGFloat             force;
-@property (nonatomic, assign) CGFloat             buttonLineHeight;
-@property (nonatomic, assign) CGFloat             separationDistance;
-@property (nonatomic, strong) UIPopoverController *popover;
-@property (nonatomic, weak  ) UIView              *presentInView;
-@property (nonatomic, strong) UIView              *presentFromView;
-@property (nonatomic, strong) UIBarButtonItem     *presentFromBarButton;
-@property (nonatomic, strong) UIView              *buttonView;
-@property (nonatomic, assign) CGRect              displayRect;
-@property (nonatomic, strong) MYSGravityArrowView *arrowView;
-@property (nonatomic, assign) BOOL                isDismissing;
+@property (nonatomic, strong) UIDynamicAnimator       *animator;
+@property (nonatomic, strong) NSMutableArray          *buttons;
+@property (nonatomic, strong) NSArray                 *reorderedButtons;
+@property (nonatomic, strong) NSMutableArray          *buttonTitles;
+@property (nonatomic, retain) NSMutableDictionary     *buttonBlockDictionary;
+@property (nonatomic, assign) int                     padding;
+@property (nonatomic, assign) int                     paddingBottom;
+@property (nonatomic, assign) int                     paddingCancelButton;
+@property (nonatomic, assign) CGFloat                 buttonHeight;
+@property (nonatomic, assign) CGFloat                 magnitude;
+@property (nonatomic, assign) CGFloat                 elasticity;
+@property (nonatomic, assign) CGFloat                 force;
+@property (nonatomic, assign) CGFloat                 buttonLineHeight;
+@property (nonatomic, assign) CGFloat                 separationDistance;
+@property (nonatomic, assign) CGFloat                 roundCornerOffset;
+@property (nonatomic, strong) UIPopoverController     *popover;
+@property (nonatomic, weak  ) UIView                  *presentInView;
+@property (nonatomic, strong) UIView                  *presentFromView;
+@property (nonatomic, strong) UIBarButtonItem         *presentFromBarButton;
+@property (nonatomic, strong) UIView                  *buttonView;
+@property (nonatomic, assign) CGRect                  displayRect;
+@property (nonatomic, assign) UIPopoverArrowDirection arrowDirection;
+@property (nonatomic, assign) BOOL                    isDismissing;
 @end
 
 
@@ -59,12 +60,6 @@ typedef void (^ActionBlock)();
     self.presentFromBarButton   = item;
     self.presentInView          = inView;
     
-    if (self.arrowView == nil) {
-        self.arrowView                  = [MYSGravityArrowView new];
-        self.arrowView.backgroundColor  = [UIColor clearColor];
-        [self addSubview:self.arrowView];
-    }
-    
     [self showInView:self.presentInView];
     
     UIView *view            = [item valueForKey:@"view"];
@@ -73,9 +68,9 @@ typedef void (^ActionBlock)();
     
     // HACK leech off the popover's rect but don't actually use the popover (present popover so rect is set, then immediately dismiss)
     [self.popover presentPopoverFromBarButtonItem:item permittedArrowDirections:UIPopoverArrowDirectionDown | UIPopoverArrowDirectionUp animated:NO];
-    self.arrowView.arrowDirection   = self.popover.popoverArrowDirection;
-    CGRect pt1                      = [self.popover.contentViewController.view convertRect:self.popover.contentViewController.view.frame toView:self.superview];
-    self.displayRect                = pt1;
+    self.arrowDirection = self.popover.popoverArrowDirection;
+    CGRect pt1          = [self.popover.contentViewController.view convertRect:self.popover.contentViewController.view.frame toView:self.superview];
+    self.displayRect    = pt1;
     
     [self.popover dismissPopoverAnimated:NO];
 }
@@ -85,20 +80,14 @@ typedef void (^ActionBlock)();
     self.presentFromView    = fromView;
     self.presentInView      = inView;
     
-    if (self.arrowView == nil) {
-        self.arrowView= [MYSGravityArrowView new];
-        self.arrowView.backgroundColor = [UIColor clearColor];
-        [self addSubview:self.arrowView];
-    }
-    
     [self showInView:inView];
     [self adjustPopoverLayout];
     
     // HACK leech off the popover's rect but don't actually use the popover (present popover so rect is set, then immediately dismiss)
     [self.popover presentPopoverFromRect:fromView.frame inView:inView permittedArrowDirections:UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown animated:NO];
-    self.arrowView.arrowDirection   = self.popover.popoverArrowDirection;
-    CGRect pt1                      = [self.popover.contentViewController.view convertRect:self.popover.contentViewController.view.frame toView:inView];
-    self.displayRect                = pt1;
+    self.arrowDirection = self.popover.popoverArrowDirection;
+    CGRect pt1          = [self.popover.contentViewController.view convertRect:self.popover.contentViewController.view.frame toView:inView];
+    self.displayRect    = pt1;
     
     [self.popover dismissPopoverAnimated:NO];
 }
@@ -123,7 +112,8 @@ typedef void (^ActionBlock)();
     self.force                  = PAD ? -200 : -100; // applies force to items above selected item
     self.isDismissing           = NO;
     self.buttonLineHeight       = 2;
-    self.separationDistance     = 10;   // The distance each button is apart before they start to fall
+    self.separationDistance     = 10;       // The distance each button is apart before they start to fall
+    self.roundCornerOffset      = 5;        // How much the button corners are rounded
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapped:)];
     [self addGestureRecognizer:tap];
@@ -151,10 +141,8 @@ typedef void (^ActionBlock)();
     [super layoutSubviews];
     CGRect bounds;
     
-    if (self.popover) {
-        [self adjustDisplayRectForArrow];
+    if (self.popover)
         bounds = self.displayRect;
-    }
     else
         bounds = self.bounds;
     
@@ -172,11 +160,16 @@ typedef void (^ActionBlock)();
         }
         
         // Makes a line visable between each button
-        UIButton *button    = [[buttonContainer subviews] lastObject];
+        UIButton *button    = [self buttonFromContainer:buttonContainer];
         button.frame        = CGRectInset(buttonContainer.bounds, 0, self.buttonLineHeight);
     }
     
     [self roundButtonCornersAndCancelButtonPadding];
+    
+    if (self.popover) {
+        [self addArrowToButtonContainer];
+        [self adjustDisplayRectForArrow];
+    }
     
     if (self.animator == nil) {
         [self addAnimations];
@@ -206,8 +199,8 @@ typedef void (^ActionBlock)();
     UIView *buttonContainer = [UIView new];
     buttonContainer.tag     = MYSGravityActionSheetButtonTypeCancel;
     [self addSubview:buttonContainer];
-    UIButton *button = [self buttonWithTitle:title textColor:nil];
-    button.titleLabel.font = [UIFont boldSystemFontOfSize:button.titleLabel.font.pointSize];
+    UIButton *button        = [self buttonWithTitle:title textColor:nil];
+    button.titleLabel.font  = [UIFont boldSystemFontOfSize:button.titleLabel.font.pointSize];
     [buttonContainer addSubview:button];
     
     [self.buttons addObject:buttonContainer];
@@ -244,7 +237,7 @@ typedef void (^ActionBlock)();
             [((UICollisionBehavior *)behavior) removeAllBoundaries]; // so items don't get stuck on walls
     }
 
-    NSInteger buttonIndex = [self.reorderedButtons indexOfObject:[button superview]];
+    NSInteger buttonIndex   = [self.reorderedButtons indexOfObject:[button superview]];
     BOOL isDropViewSelected = NO;
     if (buttonIndex == NSNotFound) {
         buttonIndex         = 0;
@@ -254,20 +247,7 @@ typedef void (^ActionBlock)();
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         UIGravityBehavior *gravityBehavior  = [[UIGravityBehavior alloc] init];
         gravityBehavior.magnitude           = self.magnitude * (PAD ? 10 : 1);
-        dispatch_async(dispatch_get_main_queue(), ^{
             
-            // Animate arrow depending on direction
-            if (self.arrowView.arrowDirection == UIPopoverArrowDirectionUp || (isDropViewSelected && PAD)) {
-                UIPushBehavior *pushBehavior    = [[UIPushBehavior alloc] initWithItems:@[self.arrowView] mode:UIPushBehaviorModeContinuous];
-                pushBehavior.pushDirection      = CGVectorMake(0, self.force);
-                [self.animator addBehavior:pushBehavior];
-            }
-            else if (self.arrowView.arrowDirection == UIPopoverArrowDirectionDown) {
-                [gravityBehavior addItem:self.arrowView];
-                [self.animator addBehavior:gravityBehavior];
-            }
-        });
-        
         // Delay the chosen one
         [self.reorderedButtons enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -292,7 +272,6 @@ typedef void (^ActionBlock)();
     });
     
     // A rect on the bottom of the superview to detect when the last visable view is leaving. Then fade the backdrop.
-    // TODO looks awful with bottom buttons on iPhone and  when popup is near bottom on iPad
 
     if (self.reorderedButtons.count > 0) {
         UIView *lastVisableView             = self.reorderedButtons[buttonIndex];
@@ -378,19 +357,97 @@ typedef void (^ActionBlock)();
 
 
 # pragma mark - private
+- (void)addArrowToButtonContainer
+
+{
+    UIView *bottomButtonContainer           = [self.reorderedButtons firstObject];
+    UIView *topButtonContainer              = [self.reorderedButtons lastObject];
+    MYSGravityArrowView *bottomArrowView    = nil;
+    MYSGravityArrowView *topArrowView       = nil;
+    UIButton *topButton                     = nil;
+    
+    for(UIView *view in topButtonContainer.subviews){
+        if([view isKindOfClass:[UIButton class]]){
+            topButton = (UIButton *)view;
+        }
+        else if([view isKindOfClass:[MYSGravityArrowView class]]){
+            topArrowView = (MYSGravityArrowView *)view;
+        }
+    }
+    for(UIView *view in bottomButtonContainer.subviews){
+        if([view isKindOfClass:[MYSGravityArrowView class]]){
+            bottomArrowView = (MYSGravityArrowView *)view;
+        }
+    }
+    
+    // Button Containers
+    CGRect bottomContainerFrame         = bottomButtonContainer.frame;
+    bottomContainerFrame.size.height   += [MYSGravityArrowView arrowHeight];
+    bottomButtonContainer.frame         = bottomContainerFrame;
+    
+    CGRect topContainerFrame        = topButtonContainer.frame;
+    topContainerFrame.size.height  += [MYSGravityArrowView arrowHeight];
+    topButtonContainer.frame        = topContainerFrame;
+    
+    
+    // Top Button
+    CGRect topButtonRect = topButton.frame;
+    if (self.reorderedButtons.count == 1)
+        topButtonRect.origin.y = topButtonContainer.bounds.origin.y + topButtonContainer.bounds.size.height - self.buttonLineHeight - topButtonRect.size.height - [MYSGravityArrowView arrowHeight];
+    else
+        topButtonRect.origin.y = topButtonContainer.bounds.origin.y + topButtonContainer.bounds.size.height - self.buttonLineHeight - topButtonRect.size.height;
+    topButton.frame = topButtonRect;
+    
+    // Bottom Arrow
+    CGRect arrowRect        = bottomButtonContainer.bounds;
+    arrowRect.origin.y      = bottomButtonContainer.bounds.origin.y + bottomButtonContainer.bounds.size.height - [MYSGravityArrowView arrowHeight] - self.buttonLineHeight - 0.5;     // 0.5 for just a little overlap
+    arrowRect.size.height   = [MYSGravityArrowView arrowHeight];
+    
+    if (bottomArrowView == nil) {
+        bottomArrowView                     = [MYSGravityArrowView new];
+        bottomArrowView.roundCornerOffset   = self.roundCornerOffset;
+        bottomArrowView.arrowDirection      = UIPopoverArrowDirectionDown;
+        bottomArrowView.backgroundColor     = [UIColor clearColor];
+        [bottomButtonContainer addSubview:bottomArrowView];
+    }
+    bottomArrowView.frame           = arrowRect;
+    
+    // Top arrow
+    CGRect topArrowRect        = topButtonContainer.bounds;
+    topArrowRect.origin.y      = topButtonContainer.bounds.origin.y  + self.buttonLineHeight;
+    topArrowRect.size.height   = [MYSGravityArrowView arrowHeight];
+    if (topArrowView == nil) {
+        topArrowView                    = [MYSGravityArrowView new];
+        topArrowView.roundCornerOffset  = self.roundCornerOffset;
+        topArrowView.arrowDirection     = UIPopoverArrowDirectionUp;
+        topArrowView.backgroundColor    = [UIColor clearColor];
+        [topButtonContainer addSubview:topArrowView];
+    }
+    topArrowView.frame              = topArrowRect;
+}
+
+- (UIButton *)buttonFromContainer:(UIView *)buttonContainer
+{
+    for(UIButton *button in buttonContainer.subviews){
+        if([button isKindOfClass:[UIButton class]]){
+            return button;
+        }
+    }
+    return nil;
+}
 
 - (void)roundButtonCornersAndCancelButtonPadding
 {
     if (self.buttons.count == 1) {
-        UIButton *button = [[[self.reorderedButtons lastObject] subviews] lastObject];
+        UIButton *button =  [self buttonFromContainer:[self.reorderedButtons lastObject]];
         [self roundCorner:button corners:UIRectCornerAllCorners];
     }
     else if (self.buttons.count > 1) {
-        UIButton *topButton =  [[self.reorderedButtons[self.buttons.count -1] subviews] lastObject];
+        UIButton *topButton =  [self buttonFromContainer:[self.reorderedButtons lastObject]];
         [self roundCorner:topButton corners:UIRectCornerTopLeft | UIRectCornerTopRight];
         
         UIView *bottomButtonContainer   = [self.reorderedButtons firstObject];
-        UIButton *bottomButton          = [[bottomButtonContainer subviews] lastObject];
+        UIButton *bottomButton          = [self buttonFromContainer:bottomButtonContainer];
         
         // Make cancel button separation
         if (bottomButtonContainer.tag == MYSGravityActionSheetButtonTypeCancel) {
@@ -404,7 +461,7 @@ typedef void (^ActionBlock)();
             
             if (self.reorderedButtons.count > 1) {
                 UIView *secondToBottomButtonContainer   = self.reorderedButtons[1];
-                UIButton *secondToBottomButton            = [[secondToBottomButtonContainer subviews] lastObject];
+                UIButton *secondToBottomButton          = [self buttonFromContainer:secondToBottomButtonContainer];
                 
                 if (self.reorderedButtons.count == 2) // only two
                     [self roundCorner:secondToBottomButton corners:UIRectCornerAllCorners];
@@ -469,36 +526,55 @@ typedef void (^ActionBlock)();
 
 - (void)adjustDisplayRectForArrow
 {
-    CGFloat arrowViewHeight = self.arrowView.arrowHeight;
-    CGRect bounds           = self.displayRect;
-    int placement           = 0; // the y position affects where the arrow appears in line up
+    CGFloat arrowViewHeight = [MYSGravityArrowView arrowHeight];
     
-    switch (self.arrowView.arrowDirection) {
+    UIView *topButtonContainer      = [self.reorderedButtons lastObject];
+    UIView *bottomButtonContainer      = [self.reorderedButtons firstObject];
+    
+    // Locate arrow views in containers
+    MYSGravityArrowView *topArrowView  = nil;
+    for(MYSGravityArrowView *view in topButtonContainer.subviews)
+        if([view isKindOfClass:[MYSGravityArrowView class]] && view.arrowDirection == UIPopoverArrowDirectionUp)
+            topArrowView = (MYSGravityArrowView *)view;
+    
+    MYSGravityArrowView *bottomArrowView  = nil;
+    for(MYSGravityArrowView *view in bottomButtonContainer.subviews)
+        if([view isKindOfClass:[MYSGravityArrowView class]] && view.arrowDirection == UIPopoverArrowDirectionDown)
+            bottomArrowView = (MYSGravityArrowView *)view;
+    
+    CGRect adjustment   = self.displayRect;
+    switch (self.arrowDirection) {
         case UIPopoverArrowDirectionUp:
-            placement           = (int)self.buttons.count;
+            if (bottomButtonContainer.tag == MYSGravityActionSheetButtonTypeCancel)
+                adjustment.origin.y    += arrowViewHeight + self.paddingCancelButton/1.5; // hack to deal with UIPopupController rect and the custom arrow
+            else
+                adjustment.origin.y    += arrowViewHeight;
+            self.displayRect        = adjustment;
+            bottomArrowView.hidden  = YES;
+            topArrowView.hidden     = NO;
             break;
         case UIPopoverArrowDirectionDown:
-            placement           = 0;
-            CGRect adjustment   = self.displayRect;
-            adjustment.origin.y+= arrowViewHeight;
-            self.displayRect    = adjustment;
+            adjustment              = self.displayRect;
+            adjustment.origin.y    += arrowViewHeight + 2; // +2 is a hack to deal UIPopupController rect and the custom arrow (among other things)
+            self.displayRect        = adjustment;
+            bottomArrowView.hidden  = NO;
+            topArrowView.hidden     = YES;
             break;
         default:
             break;
     }
     
-    self.arrowView.frame    = CGRectMake(bounds.origin.x, self.bounds.origin.y + (self.buttonHeight + self.separationDistance) * -1 * placement, bounds.size.width, arrowViewHeight);
-    self.arrowView.roundCornerOffset = 5.0;
-    
     // Place the arrow
-    CGRect arrowRect        = [self.superview convertRect:self.arrowView.bounds fromView:self.arrowView];
+    CGRect arrowRect        = [self.superview convertRect:topButtonContainer.bounds fromView:topButtonContainer]; // the top Container is the same size as the arrow view. All we care about is the x position
     CGRect presentViewRect;
     if (self.presentFromBarButton)
         presentViewRect = self.presentFromView.frame;
     else
         presentViewRect = [self.superview convertRect:self.presentFromView.bounds fromView:self.presentFromView];
-    double offsetX          = presentViewRect.origin.x - arrowRect.origin.x + presentViewRect.size.width/2 - self.arrowView.arrowBase/2 ;
-    self.arrowView.posX     = offsetX;
+    
+    double offsetX                      = presentViewRect.origin.x - arrowRect.origin.x + presentViewRect.size.width/2 - [MYSGravityArrowView arrowBase]/2 ;
+    topArrowView.posX                   = offsetX;
+    bottomArrowView.posX                = offsetX;
 }
 
 - (void)orientationChanged:(id)sender
@@ -506,14 +582,14 @@ typedef void (^ActionBlock)();
     if (self.popover && self.presentFromBarButton == nil) {
         [self.popover presentPopoverFromRect:self.presentFromView.frame inView:self.presentInView permittedArrowDirections:UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown animated:NO];
         CGRect pt1                      = [self.popover.contentViewController.view convertRect:self.popover.contentViewController.view.bounds toView:self.presentInView];
-        self.arrowView.arrowDirection   = self.popover.popoverArrowDirection;
+        self.arrowDirection   = self.popover.popoverArrowDirection;
         [self.popover dismissPopoverAnimated:NO];
 
         self.displayRect = pt1;
     }
     else if (self.popover && self.presentFromBarButton) {
         [self.popover presentPopoverFromBarButtonItem:self.presentFromBarButton permittedArrowDirections:UIPopoverArrowDirectionDown | UIPopoverArrowDirectionUp animated:NO];
-        self.arrowView.arrowDirection   = self.popover.popoverArrowDirection;
+        self.arrowDirection   = self.popover.popoverArrowDirection;
         CGRect pt1                      = [self.popover.contentViewController.view convertRect:self.popover.contentViewController.view.frame toView:self.superview];
         self.displayRect                = pt1;
         
@@ -542,7 +618,7 @@ typedef void (^ActionBlock)();
     UIBezierPath *maskPath;
     maskPath = [UIBezierPath bezierPathWithRoundedRect:view.bounds
                                      byRoundingCorners: corners
-                                           cornerRadii:CGSizeMake(5.0, 5.0)];
+                                           cornerRadii:CGSizeMake(self.roundCornerOffset, self.roundCornerOffset)];
     CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
     maskLayer.frame         = view.bounds;
     maskLayer.path          = maskPath.CGPath;
@@ -564,11 +640,6 @@ typedef void (^ActionBlock)();
 - (void)addAnimations
 {
     NSArray *items = self.reorderedButtons;
-    if (self.popover) {
-        NSMutableArray *collItems = [NSMutableArray arrayWithArray:self.reorderedButtons];
-        [collItems addObject:self.arrowView];
-        items = [NSArray arrayWithArray:collItems];
-    }
     
     self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self];
     self.animator.delegate = self;
@@ -644,25 +715,10 @@ typedef void (^ActionBlock)();
         if (buttonContainer.tag == MYSGravityActionSheetButtonTypeCancel)
             isCancelButton = YES;
         
-        if ((isCancelButton && i > 1) || (!isCancelButton && i > 0)) { // skip the bottom button
-            [buttonContainer setFrame: CGRectMake(prevRect.origin.x, prevRect.origin.y - prevRect.size.height + self.buttonLineHeight, prevRect.size.width, prevRect.size.height)];
+        if (((isCancelButton && i > 1) || (!isCancelButton && i > 0))) {
+            [buttonContainer setFrame: CGRectMake(prevRect.origin.x, prevRect.origin.y - buttonContainer.frame.size.height + self.buttonLineHeight, prevRect.size.width, buttonContainer.frame.size.height)];
         }
         prevRect = buttonContainer.frame;
-    }
-    
-    if (self.arrowView.arrowDirection == UIPopoverArrowDirectionUp) {
-        CGRect frame = self.arrowView.frame;
-        frame.origin.y = prevRect.origin.y  - frame.size.height + self.buttonLineHeight;
-        self.arrowView.frame = frame;
-    }
-    else if (self.arrowView.arrowDirection == UIPopoverArrowDirectionDown) {
-        CGRect frame = self.arrowView.frame;
-        
-        if (self.reorderedButtons.count > 0) {
-            UIView *bottomButton = [self.reorderedButtons firstObject];
-            frame.origin.y = bottomButton.frame.origin.y  + bottomButton.frame.size.height - self.buttonLineHeight - 0.1; // 0.1 for just a little overlap
-            self.arrowView.frame = frame;
-        }
     }
 }
 
