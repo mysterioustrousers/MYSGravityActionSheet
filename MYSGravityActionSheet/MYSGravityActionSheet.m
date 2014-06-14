@@ -3,7 +3,7 @@
 //  DynamicsPlayground
 //
 //  Created by Dan Willoughby on 5/30/14.
-//  Copyright (c) 2014 Willoughby. All rights reserved.
+//  Copyright (c) 2014 Mysterious Trousers. All rights reserved.
 //
 
 
