@@ -30,9 +30,9 @@ typedef void (^ActionBlock)();
 @property (nonatomic, strong) NSArray                 *reorderedButtons;
 @property (nonatomic, strong) NSMutableArray          *buttonTitles;
 @property (nonatomic, retain) NSMutableDictionary     *buttonBlockDictionary;
-@property (nonatomic, assign) int                     padding;
-@property (nonatomic, assign) int                     paddingBottom;
-@property (nonatomic, assign) int                     paddingCancelButton;
+@property (nonatomic, assign) NSInteger               padding;
+@property (nonatomic, assign) NSInteger               paddingBottom;
+@property (nonatomic, assign) NSInteger               paddingCancelButton;
 @property (nonatomic, assign) CGFloat                 buttonHeight;
 @property (nonatomic, assign) CGFloat                 magnitude;
 @property (nonatomic, assign) CGFloat                 elasticity;
@@ -228,53 +228,24 @@ typedef void (^ActionBlock)();
 {
     if (self.isDismissing) return;
     
-    self.isDismissing   = YES;
+    self.isDismissing = YES;
     
     for (UIDynamicBehavior *behavior in self.animator.behaviors) {
         if ([behavior isKindOfClass:[UIGravityBehavior class]])
             [self.animator removeBehavior:behavior];
         else if ([behavior isKindOfClass:[UICollisionBehavior class]])
-            [((UICollisionBehavior *)behavior) removeAllBoundaries]; // so items don't get stuck on walls
+            [(UICollisionBehavior *)behavior removeAllBoundaries]; // so items don't get stuck on walls
+        else if ([behavior isKindOfClass:[UIAttachmentBehavior class]])
+            [(UIAttachmentBehavior *)behavior setFrequency:1];
     }
 
-    NSInteger buttonIndex   = [self.reorderedButtons indexOfObject:[button superview]];
-    BOOL isDropViewSelected = NO;
-    if (buttonIndex == NSNotFound) {
-        buttonIndex         = 0;
-        isDropViewSelected  = YES;
-    }
+    UIPushBehavior *pushBehavior    = [[UIPushBehavior alloc] initWithItems:@[[self.buttons firstObject]] mode:UIPushBehaviorModeContinuous];
+    pushBehavior.pushDirection      = CGVectorMake(0, self.force * 5);
+    [self.animator addBehavior:pushBehavior];
 
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        UIGravityBehavior *gravityBehavior  = [[UIGravityBehavior alloc] init];
-        gravityBehavior.magnitude           = self.magnitude * (PAD ? 10 : 1);
-            
-        // Delay the chosen one
-        [self.reorderedButtons enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (idx > buttonIndex || isDropViewSelected) {
-                    UIPushBehavior *pushBehavior    = [[UIPushBehavior alloc] initWithItems:@[obj] mode:UIPushBehaviorModeContinuous];
-                    pushBehavior.pushDirection      = CGVectorMake(0, self.force);
-                    [self.animator addBehavior:pushBehavior];
-                }
-                else if (idx < buttonIndex) {
-                    [gravityBehavior addItem:obj];
-                    [self.animator addBehavior:gravityBehavior];
-                }
-                else if (idx == buttonIndex){
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                        [gravityBehavior addItem:obj];
-                        [self.animator addBehavior:gravityBehavior];
-                    });
-                }
-            });
-            [NSThread sleepForTimeInterval:0.02];
-        }];
-    });
-    
     // A rect on the bottom of the superview to detect when the last visable view is leaving. Then fade the backdrop.
-
-    if (self.reorderedButtons.count > 0) {
-        UIView *lastVisableView             = self.reorderedButtons[buttonIndex];
+    if ([self.reorderedButtons count] > 0) {
+        UIView *lastVisableView             = [self.reorderedButtons lastObject];
         __block BOOL isAnimatingBackDrop    = NO;
         UIDynamicItemBehavior *dynamic      = [[UIDynamicItemBehavior alloc] initWithItems:@[lastVisableView]];
         dynamic.action = ^{
@@ -518,7 +489,7 @@ typedef void (^ActionBlock)();
     button.backgroundColor      = [UIColor colorWithWhite:1.0 alpha:0.95];
     button.titleLabel.font      = [UIFont systemFontOfSize:22];
     [button setTitle:title forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(buttonWasTapped:) forControlEvents:UIControlEventTouchDown];
+    [button addTarget:self action:@selector(buttonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
     if (color)
         [button setTitleColor:color forState:UIControlStateNormal];
     return button;
@@ -632,8 +603,9 @@ typedef void (^ActionBlock)();
     [self.animator addBehavior:push];
 }
 
-- (void)viewTapped:(id)sender
+- (void)viewTapped:(UIGestureRecognizer *)gesture
 {
+    if (gesture.state != UIGestureRecognizerStateEnded) return;
     [self dismiss];
 }
 
@@ -660,7 +632,7 @@ typedef void (^ActionBlock)();
 
 - (void)addGravityOnItems:(NSArray *)items magnitude:(CGFloat)magnitude
 {
-    UIGravityBehavior *gravity  = [[UIGravityBehavior alloc] initWithItems: items];
+    UIGravityBehavior *gravity  = [[UIGravityBehavior alloc] initWithItems:items];
     gravity.magnitude           = magnitude;
     [self.animator addBehavior:gravity];
 }
@@ -669,30 +641,35 @@ typedef void (^ActionBlock)();
 {
     CGRect bounds;
     if (self.popover)
-         bounds = self.displayRect;
+        bounds = self.displayRect;
     else {
-        bounds          = self.bounds;
-        bounds.origin.y-= self.paddingBottom;
+        bounds = self.bounds;
     }
-    
-    CGPoint topLeftCorner       = CGPointMake(CGRectGetMinX(bounds), CGRectGetMinY(bounds));
-    CGPoint topRightCorner      = CGPointMake(CGRectGetMaxX(bounds), CGRectGetMinY(bounds));
-    CGPoint bottomRightCorner   = CGPointMake(CGRectGetMaxX(bounds), CGRectGetMaxY(bounds));
-    CGPoint bottomLeftCorner    = CGPointMake(CGRectGetMinX(bounds), CGRectGetMaxY(bounds));
-    
-    UICollisionBehavior *collision  = [[UICollisionBehavior alloc] initWithItems: items];
-    [collision addBoundaryWithIdentifier:@"floor"
-                               fromPoint: bottomLeftCorner 
-                                 toPoint: bottomRightCorner];
-    
-    [collision addBoundaryWithIdentifier:@"leftside"
-                               fromPoint: topLeftCorner
-                                 toPoint: bottomLeftCorner];
-    
-    [collision addBoundaryWithIdentifier:@"rightside"
-                               fromPoint: topRightCorner
-                                 toPoint: bottomRightCorner];
+
+    UICollisionBehavior *collision = [[UICollisionBehavior alloc] initWithItems:items];
     [animator addBehavior:collision];
+
+    [items enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
+        if (idx == [items count] - 1) {
+//            CGPoint p = CGPointMake(CGRectGetMidX(bounds), 50);
+            UICollisionBehavior *collision = [[UICollisionBehavior alloc] initWithItems:@[view]];
+            CGPoint bottomLeftCorner       = CGPointMake(CGRectGetMinX(bounds), (CGRectGetMinY(bounds) +
+                                                                                 (self.popover ? 10 : view.frame.size.height) + 30));
+            CGPoint bottomRightCorner      = CGPointMake(CGRectGetMaxX(bounds), bottomLeftCorner.y);
+            [collision addBoundaryWithIdentifier:@"floor"
+                                       fromPoint:bottomLeftCorner
+                                         toPoint:bottomRightCorner];
+            [animator addBehavior:collision];
+        }
+        else if (idx < [items count] - 1) {
+            UIView *nextView = items[idx + 1];
+            UIAttachmentBehavior *attachmentBehavior = [[UIAttachmentBehavior alloc] initWithItem:view attachedToItem:nextView];
+            attachmentBehavior.length    = 0;
+            attachmentBehavior.frequency = 4;
+            attachmentBehavior.damping   = 1;
+            [animator addBehavior:attachmentBehavior];
+        }
+    }];
 }
 
 
