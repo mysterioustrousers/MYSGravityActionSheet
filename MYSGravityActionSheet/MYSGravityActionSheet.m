@@ -48,6 +48,7 @@ typedef void (^ActionBlock)();
 @property (nonatomic, assign) CGRect                  displayRect;
 @property (nonatomic, assign) UIPopoverArrowDirection arrowDirection;
 @property (nonatomic, assign) BOOL                    isDismissing;
+@property (nonatomic, assign) UIInterfaceOrientation  lastOrientation;
 @end
 
 
@@ -114,6 +115,8 @@ typedef void (^ActionBlock)();
     self.buttonLineHeight       = 2;
     self.separationDistance     = 10;       // The distance each button is apart before they start to fall
     self.roundCornerOffset      = 5;        // How much the button corners are rounded
+    
+    self.lastOrientation = [[UIApplication sharedApplication] statusBarOrientation];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapped:)];
     [self addGestureRecognizer:tap];
@@ -550,25 +553,30 @@ typedef void (^ActionBlock)();
 
 - (void)orientationChanged:(id)sender
 {
-    if (self.popover && self.presentFromBarButton == nil) {
-        [self.popover presentPopoverFromRect:self.presentFromView.frame inView:self.presentInView permittedArrowDirections:UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown animated:NO];
-        CGRect pt1                      = [self.popover.contentViewController.view convertRect:self.popover.contentViewController.view.bounds toView:self.presentInView];
-        self.arrowDirection   = self.popover.popoverArrowDirection;
-        [self.popover dismissPopoverAnimated:NO];
-
-        self.displayRect = pt1;
-    }
-    else if (self.popover && self.presentFromBarButton) {
-        [self.popover presentPopoverFromBarButtonItem:self.presentFromBarButton permittedArrowDirections:UIPopoverArrowDirectionDown | UIPopoverArrowDirectionUp animated:NO];
-        self.arrowDirection   = self.popover.popoverArrowDirection;
-        CGRect pt1                      = [self.popover.contentViewController.view convertRect:self.popover.contentViewController.view.frame toView:self.superview];
-        self.displayRect                = pt1;
-        
-    }
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     
-    [self.popover dismissPopoverAnimated:NO];
-    self.animator = nil;
-    [self setNeedsLayout];
+    if (self.lastOrientation != orientation) {
+        if (self.popover && self.presentFromBarButton == nil) {
+            [self.popover presentPopoverFromRect:self.presentFromView.frame inView:self.presentInView permittedArrowDirections:UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown animated:NO];
+            CGRect pt1                      = [self.popover.contentViewController.view convertRect:self.popover.contentViewController.view.bounds toView:self.presentInView];
+            self.arrowDirection   = self.popover.popoverArrowDirection;
+            [self.popover dismissPopoverAnimated:NO];
+            
+            self.displayRect = pt1;
+        }
+        else if (self.popover && self.presentFromBarButton) {
+            [self.popover presentPopoverFromBarButtonItem:self.presentFromBarButton permittedArrowDirections:UIPopoverArrowDirectionDown | UIPopoverArrowDirectionUp animated:NO];
+            self.arrowDirection   = self.popover.popoverArrowDirection;
+            CGRect pt1                      = [self.popover.contentViewController.view convertRect:self.popover.contentViewController.view.frame toView:self.superview];
+            self.displayRect                = pt1;
+            
+        }
+        
+        [self.popover dismissPopoverAnimated:NO];
+        self.animator = nil;
+        [self setNeedsLayout];
+    }
+    self.lastOrientation = orientation;
 }
 
 - (void)startOrientationObserving
