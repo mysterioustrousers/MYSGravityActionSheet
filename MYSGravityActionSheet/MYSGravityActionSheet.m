@@ -641,7 +641,7 @@ typedef void (^ActionBlock)();
 - (void)addGravityOnItems:(NSArray *)items magnitude:(CGFloat)magnitude
 {
     UIGravityBehavior *gravity  = [[UIGravityBehavior alloc] initWithItems:items];
-    gravity.magnitude           = magnitude;
+    gravity.magnitude           = magnitude * 3;
     [self.animator addBehavior:gravity];
 }
 
@@ -673,9 +673,13 @@ typedef void (^ActionBlock)();
             UIView *nextView = items[idx + 1];
             UIAttachmentBehavior *attachmentBehavior = [[UIAttachmentBehavior alloc] initWithItem:view attachedToItem:nextView];
             attachmentBehavior.length    = 0;
-            attachmentBehavior.frequency = 4;
-            attachmentBehavior.damping   = 1;
+            attachmentBehavior.frequency = 9;
+            attachmentBehavior.damping   = 2;
             [animator addBehavior:attachmentBehavior];
+
+//            UIDynamicItemBehavior *resistanceBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[view]];
+//            resistanceBehavior.resistance = 4;
+//            [animator addBehavior:resistanceBehavior];
         }
     }];
 }
