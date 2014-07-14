@@ -10,67 +10,116 @@
 	<string>46</string>
 	<key>objects</key>
 	<dict>
-		<key>00D26D58F5E641E0BB33E039</key>
+		<key>012FA848C49549BE90D6C620</key>
 		<dict>
-			<key>buildConfigurationList</key>
-			<string>F19F3F7259B44AE1BE777D4C</string>
-			<key>buildPhases</key>
-			<array>
-				<string>4029E7F816834A6C9216294A</string>
-				<string>039E501CF5314BF3A3690A0A</string>
-			</array>
-			<key>buildRules</key>
-			<array/>
-			<key>dependencies</key>
-			<array>
-				<string>5FFCDD68D4824EEC99E1691F</string>
-			</array>
+			<key>baseConfigurationReference</key>
+			<string>8091F6132F5D4F85AB43DAFE</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>ALWAYS_SEARCH_USER_PATHS</key>
+				<string>NO</string>
+				<key>COPY_PHASE_STRIP</key>
+				<string>NO</string>
+				<key>DSTROOT</key>
+				<string>/tmp/xcodeproj.dst</string>
+				<key>GCC_C_LANGUAGE_STANDARD</key>
+				<string>gnu99</string>
+				<key>GCC_DYNAMIC_NO_PIC</key>
+				<string>NO</string>
+				<key>GCC_OPTIMIZATION_LEVEL</key>
+				<string>0</string>
+				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
+				<string>YES</string>
+				<key>GCC_PREFIX_HEADER</key>
+				<string>Pods-MYSGravityActionSheetDemo-MYSGravityActionSheet-prefix.pch</string>
+				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
+				<array>
+					<string>DEBUG=1</string>
+					<string>$(inherited)</string>
+				</array>
+				<key>GCC_SYMBOLS_PRIVATE_EXTERN</key>
+				<string>NO</string>
+				<key>GCC_VERSION</key>
+				<string>com.apple.compilers.llvm.clang.1_0</string>
+				<key>INSTALL_PATH</key>
+				<string>$(BUILT_PRODUCTS_DIR)</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>7.0</string>
+				<key>OTHER_LDFLAGS</key>
+				<string></string>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>PUBLIC_HEADERS_FOLDER_PATH</key>
+				<string>$(TARGET_NAME)</string>
+				<key>SDKROOT</key>
+				<string>iphoneos</string>
+				<key>SKIP_INSTALL</key>
+				<string>YES</string>
+			</dict>
 			<key>isa</key>
-			<string>PBXNativeTarget</string>
+			<string>XCBuildConfiguration</string>
 			<key>name</key>
-			<string>Pods-MYSGravityActionSheetDemo</string>
-			<key>productName</key>
-			<string>Pods-MYSGravityActionSheetDemo</string>
-			<key>productReference</key>
-			<string>1C8D5DB0DA2D47369C2388A9</string>
-			<key>productType</key>
-			<string>com.apple.product-type.library.static</string>
+			<string>Debug</string>
 		</dict>
-		<key>039E501CF5314BF3A3690A0A</key>
+		<key>05513392FB694E6CBA0B9BE4</key>
 		<dict>
 			<key>buildActionMask</key>
 			<string>2147483647</string>
 			<key>files</key>
 			<array>
-				<string>1A8A035551F24F8EA005D530</string>
-				<string>5AAFB49E9913446C93C86F19</string>
+				<string>DBD4A1EB09C2424EA146F9A8</string>
+				<string>800211284AA54E168A699188</string>
 			</array>
 			<key>isa</key>
-			<string>PBXFrameworksBuildPhase</string>
+			<string>PBXHeadersBuildPhase</string>
 			<key>runOnlyForDeploymentPostprocessing</key>
 			<string>0</string>
 		</dict>
-		<key>0986B2B7D45E443BA937F50D</key>
+		<key>0626F910B2174D2587CAEDC8</key>
 		<dict>
-			<key>fileRef</key>
-			<string>CC07DE8CEE1D4A7DBA673011</string>
+			<key>includeInIndex</key>
+			<string>1</string>
 			<key>isa</key>
-			<string>PBXBuildFile</string>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.script.sh</string>
+			<key>path</key>
+			<string>Pods-MYSGravityActionSheetDemo-resources.sh</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
 		</dict>
-		<key>0AB5DEAF0C304E83B4EC4554</key>
+		<key>06BB28FD502F4CE38F003145</key>
+		<dict>
+			<key>containerPortal</key>
+			<string>67356E887F2F44FDA733D44C</string>
+			<key>isa</key>
+			<string>PBXContainerItemProxy</string>
+			<key>proxyType</key>
+			<string>1</string>
+			<key>remoteGlobalIDString</key>
+			<string>86921FC4B7B842049FA851B3</string>
+			<key>remoteInfo</key>
+			<string>Pods-MYSGravityActionSheetDemo-MYSGravityActionSheet</string>
+		</dict>
+		<key>0B35C07D4057490D8C38AFEF</key>
 		<dict>
 			<key>children</key>
 			<array>
-				<string>C7EA587F99B241EE8B16C693</string>
+				<string>3A490A5C07164ED6A973601C</string>
+				<string>5718ADC9770A43139D7C2288</string>
+				<string>8DEA8C4D14DE4D539499AF39</string>
+				<string>A1704BBB0B86405083DF6746</string>
+				<string>73F86AE4A5214E62A7C3F2D4</string>
+				<string>0626F910B2174D2587CAEDC8</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
 			<key>name</key>
-			<string>Development Pods</string>
+			<string>Pods-MYSGravityActionSheetDemo</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>0C6DE851F0FC442FA1DC37B2</key>
+		<key>10F5E5936C1D4D2BA8B1D72B</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
@@ -87,7 +136,233 @@
 			<key>xcLanguageSpecificationIdentifier</key>
 			<string>xcode.lang.ruby</string>
 		</dict>
-		<key>13073FDAA7D94699B0016872</key>
+		<key>1F862E95906945D99EC8F9E5</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>4D6BB2043AFE4168A038B48E</string>
+				<string>F35987529D2C4FFC9EBFB044</string>
+			</array>
+			<key>isa</key>
+			<string>PBXFrameworksBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>20AAF492498E43B28AAEF6FA</key>
+		<dict>
+			<key>fileRef</key>
+			<string>2B5B70A86A6F472F967761C3</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string>-fobjc-arc</string>
+			</dict>
+		</dict>
+		<key>2748F8877B9F4F58B40B62E1</key>
+		<dict>
+			<key>buildConfigurations</key>
+			<array>
+				<string>D5D2D65B864F4053BAF7FE51</string>
+				<string>588659B523E0400782D488B4</string>
+			</array>
+			<key>defaultConfigurationIsVisible</key>
+			<string>0</string>
+			<key>defaultConfigurationName</key>
+			<string>Release</string>
+			<key>isa</key>
+			<string>XCConfigurationList</string>
+		</dict>
+		<key>2B5B70A86A6F472F967761C3</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>MYSGravityActionSheet.m</string>
+			<key>path</key>
+			<string>MYSGravityActionSheet/MYSGravityActionSheet.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>2CB00406B3C940C4A6E77086</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>archive.ar</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>libPods-MYSGravityActionSheetDemo.a</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>30B73909E0764557BD4C3599</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>3A490A5C07164ED6A973601C</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>ALWAYS_SEARCH_USER_PATHS</key>
+				<string>NO</string>
+				<key>COPY_PHASE_STRIP</key>
+				<string>YES</string>
+				<key>DSTROOT</key>
+				<string>/tmp/xcodeproj.dst</string>
+				<key>GCC_C_LANGUAGE_STANDARD</key>
+				<string>gnu99</string>
+				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
+				<string>YES</string>
+				<key>GCC_VERSION</key>
+				<string>com.apple.compilers.llvm.clang.1_0</string>
+				<key>INSTALL_PATH</key>
+				<string>$(BUILT_PRODUCTS_DIR)</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>7.0</string>
+				<key>OTHER_CFLAGS</key>
+				<array>
+					<string>-DNS_BLOCK_ASSERTIONS=1</string>
+					<string>$(inherited)</string>
+				</array>
+				<key>OTHER_CPLUSPLUSFLAGS</key>
+				<array>
+					<string>-DNS_BLOCK_ASSERTIONS=1</string>
+					<string>$(inherited)</string>
+				</array>
+				<key>OTHER_LDFLAGS</key>
+				<string></string>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>PUBLIC_HEADERS_FOLDER_PATH</key>
+				<string>$(TARGET_NAME)</string>
+				<key>SDKROOT</key>
+				<string>iphoneos</string>
+				<key>SKIP_INSTALL</key>
+				<string>YES</string>
+				<key>VALIDATE_PRODUCT</key>
+				<string>YES</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Release</string>
+		</dict>
+		<key>372D1C8779B547BE878F099A</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>Pods-MYSGravityActionSheetDemo-MYSGravityActionSheet-prefix.pch</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>38EE2CD977214695B1340B89</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>MYSGravityArrowView.m</string>
+			<key>path</key>
+			<string>MYSGravityActionSheet/MYSGravityArrowView.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>398A5E89D252414F9487D6F8</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>0B35C07D4057490D8C38AFEF</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Targets Support Files</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>3A490A5C07164ED6A973601C</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>path</key>
+			<string>Pods-MYSGravityActionSheetDemo.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>3AEE3C474AB8416785D97695</key>
+		<dict>
+			<key>fileRef</key>
+			<string>A1704BBB0B86405083DF6746</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>4C17E51118A349FFA02D47A7</key>
+		<dict>
+			<key>buildConfigurations</key>
+			<array>
+				<string>012FA848C49549BE90D6C620</string>
+				<string>A4C4B4F136E24D63866F3BB6</string>
+			</array>
+			<key>defaultConfigurationIsVisible</key>
+			<string>0</string>
+			<key>defaultConfigurationName</key>
+			<string>Release</string>
+			<key>isa</key>
+			<string>XCConfigurationList</string>
+		</dict>
+		<key>4D6BB2043AFE4168A038B48E</key>
+		<dict>
+			<key>fileRef</key>
+			<string>E6F0C24F7A6D4217A2C1369F</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>4FE9A6F507D94466A489C0BD</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>3AEE3C474AB8416785D97695</string>
+			</array>
+			<key>isa</key>
+			<string>PBXSourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>5718ADC9770A43139D7C2288</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text</string>
+			<key>path</key>
+			<string>Pods-MYSGravityActionSheetDemo-acknowledgements.markdown</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>588659B523E0400782D488B4</key>
 		<dict>
 			<key>buildSettings</key>
 			<dict>
@@ -145,75 +420,26 @@
 			<key>name</key>
 			<string>Release</string>
 		</dict>
-		<key>1A8A035551F24F8EA005D530</key>
-		<dict>
-			<key>fileRef</key>
-			<string>92B2975F8B7842DBB589EA7E</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>1B4BFA6DC3F949CA93DBACAC</key>
+		<key>5C4EB33D13584266B022C8A1</key>
 		<dict>
 			<key>children</key>
 			<array>
-				<string>0C6DE851F0FC442FA1DC37B2</string>
-				<string>0AB5DEAF0C304E83B4EC4554</string>
-				<string>EAD95FFBA3D544C69A46AC25</string>
-				<string>6A73A18CF3E346D9A4946A4F</string>
-				<string>992FD9C201454CEC9FBE0670</string>
+				<string>CA61A8E5817C45C5BE554136</string>
+				<string>2B5B70A86A6F472F967761C3</string>
+				<string>793FC08BE61C490FA4E4D840</string>
+				<string>38EE2CD977214695B1340B89</string>
+				<string>BD9331A8F87040EE84508A1B</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
+			<key>name</key>
+			<string>MYSGravityActionSheet</string>
+			<key>path</key>
+			<string>../..</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>1C0E369A11AB4BCFB47DBBA9</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>Pods-MYSGravityActionSheetDemo-MYSGravityActionSheet-prefix.pch</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>1C8D5DB0DA2D47369C2388A9</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>archive.ar</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>libPods-MYSGravityActionSheetDemo.a</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>2CFC0D780F09481E9640B3A7</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AF26FF61725E4678AA5CC8ED</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>315C5AE5813D42FC87311737</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
-			<key>path</key>
-			<string>Pods-MYSGravityActionSheetDemo.xcconfig</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>31EE445C74B9478F9C5A85C0</key>
+		<key>67356E887F2F44FDA733D44C</key>
 		<dict>
 			<key>attributes</key>
 			<dict>
@@ -221,7 +447,7 @@
 				<string>0510</string>
 			</dict>
 			<key>buildConfigurationList</key>
-			<string>50BEB81257244AA3BD230EDB</string>
+			<string>2748F8877B9F4F58B40B62E1</string>
 			<key>compatibilityVersion</key>
 			<string>Xcode 3.2</string>
 			<key>developmentRegion</key>
@@ -235,9 +461,9 @@
 				<string>en</string>
 			</array>
 			<key>mainGroup</key>
-			<string>1B4BFA6DC3F949CA93DBACAC</string>
+			<string>92B0D03C907C4A328826F38C</string>
 			<key>productRefGroup</key>
-			<string>6A73A18CF3E346D9A4946A4F</string>
+			<string>9715D4320D3F40C0839F185E</string>
 			<key>projectDirPath</key>
 			<string></string>
 			<key>projectReferences</key>
@@ -246,11 +472,317 @@
 			<string></string>
 			<key>targets</key>
 			<array>
-				<string>00D26D58F5E641E0BB33E039</string>
-				<string>5CF2924BBFB640D0AE34FB79</string>
+				<string>E1864D76071C4EEE9C29F36B</string>
+				<string>86921FC4B7B842049FA851B3</string>
 			</array>
 		</dict>
-		<key>3CCE95ACFAC54F679285DD99</key>
+		<key>68B8DAA10D9E4006904D4C23</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>D9BD8BAEB39646139C634DC2</string>
+			</array>
+			<key>isa</key>
+			<string>PBXFrameworksBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>73F86AE4A5214E62A7C3F2D4</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>Pods-MYSGravityActionSheetDemo-environment.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>793FC08BE61C490FA4E4D840</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>MYSGravityArrowView.h</string>
+			<key>path</key>
+			<string>MYSGravityActionSheet/MYSGravityArrowView.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>800211284AA54E168A699188</key>
+		<dict>
+			<key>fileRef</key>
+			<string>793FC08BE61C490FA4E4D840</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>8091F6132F5D4F85AB43DAFE</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>path</key>
+			<string>Pods-MYSGravityActionSheetDemo-MYSGravityActionSheet-Private.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>86921FC4B7B842049FA851B3</key>
+		<dict>
+			<key>buildConfigurationList</key>
+			<string>4C17E51118A349FFA02D47A7</string>
+			<key>buildPhases</key>
+			<array>
+				<string>D17931F08D6B4295B9042BB7</string>
+				<string>68B8DAA10D9E4006904D4C23</string>
+				<string>05513392FB694E6CBA0B9BE4</string>
+			</array>
+			<key>buildRules</key>
+			<array/>
+			<key>dependencies</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXNativeTarget</string>
+			<key>name</key>
+			<string>Pods-MYSGravityActionSheetDemo-MYSGravityActionSheet</string>
+			<key>productName</key>
+			<string>Pods-MYSGravityActionSheetDemo-MYSGravityActionSheet</string>
+			<key>productReference</key>
+			<string>DFF7902EC8A1459E9C4991E8</string>
+			<key>productType</key>
+			<string>com.apple.product-type.library.static</string>
+		</dict>
+		<key>8DEA8C4D14DE4D539499AF39</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.plist.xml</string>
+			<key>path</key>
+			<string>Pods-MYSGravityActionSheetDemo-acknowledgements.plist</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>92B0D03C907C4A328826F38C</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>10F5E5936C1D4D2BA8B1D72B</string>
+				<string>BD46A46CA55B4C3495010D08</string>
+				<string>EAA81C2194BD4AC58E707BEC</string>
+				<string>9715D4320D3F40C0839F185E</string>
+				<string>398A5E89D252414F9487D6F8</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>9715D4320D3F40C0839F185E</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>2CB00406B3C940C4A6E77086</string>
+				<string>DFF7902EC8A1459E9C4991E8</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Products</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>9E678C9DA05745FE87617B91</key>
+		<dict>
+			<key>fileRef</key>
+			<string>E6BF5CF8FB38450D9C474CA5</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>A1704BBB0B86405083DF6746</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>Pods-MYSGravityActionSheetDemo-dummy.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>A4C4B4F136E24D63866F3BB6</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>8091F6132F5D4F85AB43DAFE</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>ALWAYS_SEARCH_USER_PATHS</key>
+				<string>NO</string>
+				<key>COPY_PHASE_STRIP</key>
+				<string>YES</string>
+				<key>DSTROOT</key>
+				<string>/tmp/xcodeproj.dst</string>
+				<key>GCC_C_LANGUAGE_STANDARD</key>
+				<string>gnu99</string>
+				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
+				<string>YES</string>
+				<key>GCC_PREFIX_HEADER</key>
+				<string>Pods-MYSGravityActionSheetDemo-MYSGravityActionSheet-prefix.pch</string>
+				<key>GCC_VERSION</key>
+				<string>com.apple.compilers.llvm.clang.1_0</string>
+				<key>INSTALL_PATH</key>
+				<string>$(BUILT_PRODUCTS_DIR)</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>7.0</string>
+				<key>OTHER_CFLAGS</key>
+				<array>
+					<string>-DNS_BLOCK_ASSERTIONS=1</string>
+					<string>$(inherited)</string>
+				</array>
+				<key>OTHER_CPLUSPLUSFLAGS</key>
+				<array>
+					<string>-DNS_BLOCK_ASSERTIONS=1</string>
+					<string>$(inherited)</string>
+				</array>
+				<key>OTHER_LDFLAGS</key>
+				<string></string>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>PUBLIC_HEADERS_FOLDER_PATH</key>
+				<string>$(TARGET_NAME)</string>
+				<key>SDKROOT</key>
+				<string>iphoneos</string>
+				<key>SKIP_INSTALL</key>
+				<string>YES</string>
+				<key>VALIDATE_PRODUCT</key>
+				<string>YES</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Release</string>
+		</dict>
+		<key>B3B6504AD78143B5AF5F3280</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>path</key>
+			<string>Pods-MYSGravityActionSheetDemo-MYSGravityActionSheet.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>BD46A46CA55B4C3495010D08</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>5C4EB33D13584266B022C8A1</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Development Pods</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>BD9331A8F87040EE84508A1B</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>B3B6504AD78143B5AF5F3280</string>
+				<string>8091F6132F5D4F85AB43DAFE</string>
+				<string>E6BF5CF8FB38450D9C474CA5</string>
+				<string>372D1C8779B547BE878F099A</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Support Files</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>BDF9E7276A984946BE6D52F9</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXTargetDependency</string>
+			<key>target</key>
+			<string>86921FC4B7B842049FA851B3</string>
+			<key>targetProxy</key>
+			<string>06BB28FD502F4CE38F003145</string>
+		</dict>
+		<key>C78CDCAFDEA64F3E8DDDCD57</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>E6F0C24F7A6D4217A2C1369F</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>iOS</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>CA61A8E5817C45C5BE554136</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>MYSGravityActionSheet.h</string>
+			<key>path</key>
+			<string>MYSGravityActionSheet/MYSGravityActionSheet.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>CAADE57DF3F3486899B308F7</key>
+		<dict>
+			<key>fileRef</key>
+			<string>38EE2CD977214695B1340B89</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string>-fobjc-arc</string>
+			</dict>
+		</dict>
+		<key>D17931F08D6B4295B9042BB7</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>20AAF492498E43B28AAEF6FA</string>
+				<string>CAADE57DF3F3486899B308F7</string>
+				<string>9E678C9DA05745FE87617B91</string>
+			</array>
+			<key>isa</key>
+			<string>PBXSourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>D5D2D65B864F4053BAF7FE51</key>
 		<dict>
 			<key>buildSettings</key>
 			<dict>
@@ -317,53 +849,12 @@
 			<key>name</key>
 			<string>Debug</string>
 		</dict>
-		<key>4029E7F816834A6C9216294A</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>2CFC0D780F09481E9640B3A7</string>
-			</array>
-			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>481EFE2EDC7C46AEB7F3B141</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.script.sh</string>
-			<key>path</key>
-			<string>Pods-MYSGravityActionSheetDemo-resources.sh</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>4D464DB15F704B10877C0E0B</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>MYSGravityArrowView.h</string>
-			<key>path</key>
-			<string>MYSGravityActionSheet/MYSGravityArrowView.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>50BEB81257244AA3BD230EDB</key>
+		<key>D808E7422CF34EA98F22B9DD</key>
 		<dict>
 			<key>buildConfigurations</key>
 			<array>
-				<string>3CCE95ACFAC54F679285DD99</string>
-				<string>13073FDAA7D94699B0016872</string>
+				<string>ECBD6EF1F9C24053B3B054CB</string>
+				<string>30B73909E0764557BD4C3599</string>
 			</array>
 			<key>defaultConfigurationIsVisible</key>
 			<string>0</string>
@@ -372,56 +863,21 @@
 			<key>isa</key>
 			<string>XCConfigurationList</string>
 		</dict>
-		<key>52D0DFE890904035A5CC53D3</key>
+		<key>D9BD8BAEB39646139C634DC2</key>
 		<dict>
-			<key>baseConfigurationReference</key>
-			<string>315C5AE5813D42FC87311737</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>ALWAYS_SEARCH_USER_PATHS</key>
-				<string>NO</string>
-				<key>COPY_PHASE_STRIP</key>
-				<string>NO</string>
-				<key>DSTROOT</key>
-				<string>/tmp/xcodeproj.dst</string>
-				<key>GCC_C_LANGUAGE_STANDARD</key>
-				<string>gnu99</string>
-				<key>GCC_DYNAMIC_NO_PIC</key>
-				<string>NO</string>
-				<key>GCC_OPTIMIZATION_LEVEL</key>
-				<string>0</string>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
-				<array>
-					<string>DEBUG=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>GCC_SYMBOLS_PRIVATE_EXTERN</key>
-				<string>NO</string>
-				<key>GCC_VERSION</key>
-				<string>com.apple.compilers.llvm.clang.1_0</string>
-				<key>INSTALL_PATH</key>
-				<string>$(BUILT_PRODUCTS_DIR)</string>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>7.0</string>
-				<key>OTHER_LDFLAGS</key>
-				<string></string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>PUBLIC_HEADERS_FOLDER_PATH</key>
-				<string>$(TARGET_NAME)</string>
-				<key>SDKROOT</key>
-				<string>iphoneos</string>
-				<key>SKIP_INSTALL</key>
-				<string>YES</string>
-			</dict>
+			<key>fileRef</key>
+			<string>E6F0C24F7A6D4217A2C1369F</string>
 			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
+			<string>PBXBuildFile</string>
 		</dict>
-		<key>5A74E73182464B21AB9CED79</key>
+		<key>DBD4A1EB09C2424EA146F9A8</key>
+		<dict>
+			<key>fileRef</key>
+			<string>CA61A8E5817C45C5BE554136</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>DFF7902EC8A1459E9C4991E8</key>
 		<dict>
 			<key>explicitFileType</key>
 			<string>archive.ar</string>
@@ -434,399 +890,33 @@
 			<key>sourceTree</key>
 			<string>BUILT_PRODUCTS_DIR</string>
 		</dict>
-		<key>5AAFB49E9913446C93C86F19</key>
-		<dict>
-			<key>fileRef</key>
-			<string>5A74E73182464B21AB9CED79</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>5B45FADF520A43969BE94181</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text</string>
-			<key>path</key>
-			<string>Pods-MYSGravityActionSheetDemo-acknowledgements.markdown</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>5CF2924BBFB640D0AE34FB79</key>
+		<key>E1864D76071C4EEE9C29F36B</key>
 		<dict>
 			<key>buildConfigurationList</key>
-			<string>C88F0E0102C34E4886AE19D8</string>
+			<string>D808E7422CF34EA98F22B9DD</string>
 			<key>buildPhases</key>
 			<array>
-				<string>7656DB9449CD477EBEA8B83E</string>
-				<string>669729A2054044FE84EF7913</string>
-				<string>EF07875CE70B44AC94728BC6</string>
+				<string>4FE9A6F507D94466A489C0BD</string>
+				<string>1F862E95906945D99EC8F9E5</string>
 			</array>
 			<key>buildRules</key>
 			<array/>
 			<key>dependencies</key>
-			<array/>
+			<array>
+				<string>BDF9E7276A984946BE6D52F9</string>
+			</array>
 			<key>isa</key>
 			<string>PBXNativeTarget</string>
 			<key>name</key>
-			<string>Pods-MYSGravityActionSheetDemo-MYSGravityActionSheet</string>
+			<string>Pods-MYSGravityActionSheetDemo</string>
 			<key>productName</key>
-			<string>Pods-MYSGravityActionSheetDemo-MYSGravityActionSheet</string>
+			<string>Pods-MYSGravityActionSheetDemo</string>
 			<key>productReference</key>
-			<string>5A74E73182464B21AB9CED79</string>
+			<string>2CB00406B3C940C4A6E77086</string>
 			<key>productType</key>
 			<string>com.apple.product-type.library.static</string>
 		</dict>
-		<key>5FFCDD68D4824EEC99E1691F</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXTargetDependency</string>
-			<key>target</key>
-			<string>5CF2924BBFB640D0AE34FB79</string>
-			<key>targetProxy</key>
-			<string>E0F2B089B30D4A0B97449261</string>
-		</dict>
-		<key>616032F66344439C90FF7238</key>
-		<dict>
-			<key>baseConfigurationReference</key>
-			<string>9F107026D15A48B29B78BBCC</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>ALWAYS_SEARCH_USER_PATHS</key>
-				<string>NO</string>
-				<key>COPY_PHASE_STRIP</key>
-				<string>YES</string>
-				<key>DSTROOT</key>
-				<string>/tmp/xcodeproj.dst</string>
-				<key>GCC_C_LANGUAGE_STANDARD</key>
-				<string>gnu99</string>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>Pods-MYSGravityActionSheetDemo-MYSGravityActionSheet-prefix.pch</string>
-				<key>GCC_VERSION</key>
-				<string>com.apple.compilers.llvm.clang.1_0</string>
-				<key>INSTALL_PATH</key>
-				<string>$(BUILT_PRODUCTS_DIR)</string>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>7.0</string>
-				<key>OTHER_CFLAGS</key>
-				<array>
-					<string>-DNS_BLOCK_ASSERTIONS=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>OTHER_CPLUSPLUSFLAGS</key>
-				<array>
-					<string>-DNS_BLOCK_ASSERTIONS=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>OTHER_LDFLAGS</key>
-				<string></string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>PUBLIC_HEADERS_FOLDER_PATH</key>
-				<string>$(TARGET_NAME)</string>
-				<key>SDKROOT</key>
-				<string>iphoneos</string>
-				<key>SKIP_INSTALL</key>
-				<string>YES</string>
-				<key>VALIDATE_PRODUCT</key>
-				<string>YES</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>669729A2054044FE84EF7913</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>D112BE87FB774DA89114FEF8</string>
-			</array>
-			<key>isa</key>
-			<string>PBXFrameworksBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>69A955A658814D78BD2C60AA</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.xml</string>
-			<key>path</key>
-			<string>Pods-MYSGravityActionSheetDemo-acknowledgements.plist</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>6A73A18CF3E346D9A4946A4F</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>1C8D5DB0DA2D47369C2388A9</string>
-				<string>5A74E73182464B21AB9CED79</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Products</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>7209690CA5694E59B94AC80B</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>MYSGravityActionSheet.m</string>
-			<key>path</key>
-			<string>MYSGravityActionSheet/MYSGravityActionSheet.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>7656DB9449CD477EBEA8B83E</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>84E4CA55259E480EB0F501E8</string>
-				<string>BA5C12878B79477398CCE8D3</string>
-				<string>0986B2B7D45E443BA937F50D</string>
-			</array>
-			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>8037DF4C53404542ABDB71A2</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>315C5AE5813D42FC87311737</string>
-				<string>5B45FADF520A43969BE94181</string>
-				<string>69A955A658814D78BD2C60AA</string>
-				<string>AF26FF61725E4678AA5CC8ED</string>
-				<string>A6C873962D7D42DCA76520DB</string>
-				<string>481EFE2EDC7C46AEB7F3B141</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Pods-MYSGravityActionSheetDemo</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>84E4CA55259E480EB0F501E8</key>
-		<dict>
-			<key>fileRef</key>
-			<string>7209690CA5694E59B94AC80B</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string>-fobjc-arc</string>
-			</dict>
-		</dict>
-		<key>92B2975F8B7842DBB589EA7E</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>Foundation.framework</string>
-			<key>path</key>
-			<string>Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/Foundation.framework</string>
-			<key>sourceTree</key>
-			<string>DEVELOPER_DIR</string>
-		</dict>
-		<key>992FD9C201454CEC9FBE0670</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>8037DF4C53404542ABDB71A2</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Targets Support Files</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>9F107026D15A48B29B78BBCC</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
-			<key>path</key>
-			<string>Pods-MYSGravityActionSheetDemo-MYSGravityActionSheet-Private.xcconfig</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>A0681E64A54E447C9C11FE10</key>
-		<dict>
-			<key>baseConfigurationReference</key>
-			<string>315C5AE5813D42FC87311737</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>ALWAYS_SEARCH_USER_PATHS</key>
-				<string>NO</string>
-				<key>COPY_PHASE_STRIP</key>
-				<string>YES</string>
-				<key>DSTROOT</key>
-				<string>/tmp/xcodeproj.dst</string>
-				<key>GCC_C_LANGUAGE_STANDARD</key>
-				<string>gnu99</string>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_VERSION</key>
-				<string>com.apple.compilers.llvm.clang.1_0</string>
-				<key>INSTALL_PATH</key>
-				<string>$(BUILT_PRODUCTS_DIR)</string>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>7.0</string>
-				<key>OTHER_CFLAGS</key>
-				<array>
-					<string>-DNS_BLOCK_ASSERTIONS=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>OTHER_CPLUSPLUSFLAGS</key>
-				<array>
-					<string>-DNS_BLOCK_ASSERTIONS=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>OTHER_LDFLAGS</key>
-				<string></string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>PUBLIC_HEADERS_FOLDER_PATH</key>
-				<string>$(TARGET_NAME)</string>
-				<key>SDKROOT</key>
-				<string>iphoneos</string>
-				<key>SKIP_INSTALL</key>
-				<string>YES</string>
-				<key>VALIDATE_PRODUCT</key>
-				<string>YES</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>A6C873962D7D42DCA76520DB</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>Pods-MYSGravityActionSheetDemo-environment.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AF26FF61725E4678AA5CC8ED</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>Pods-MYSGravityActionSheetDemo-dummy.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>B70EE1E124624D08B37F324B</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>92B2975F8B7842DBB589EA7E</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>iOS</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>BA5C12878B79477398CCE8D3</key>
-		<dict>
-			<key>fileRef</key>
-			<string>CE4265B1F01546B98B672AB1</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string>-fobjc-arc</string>
-			</dict>
-		</dict>
-		<key>C414E9BB2B544F38AD520862</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
-			<key>path</key>
-			<string>Pods-MYSGravityActionSheetDemo-MYSGravityActionSheet.xcconfig</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C7EA587F99B241EE8B16C693</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>FBDC88FDD38A43DF9532B31A</string>
-				<string>7209690CA5694E59B94AC80B</string>
-				<string>4D464DB15F704B10877C0E0B</string>
-				<string>CE4265B1F01546B98B672AB1</string>
-				<string>D9BBA4ABDB834AD4942B0346</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>MYSGravityActionSheet</string>
-			<key>path</key>
-			<string>../..</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C88F0E0102C34E4886AE19D8</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>E2EA437576B04C39BD45B22B</string>
-				<string>616032F66344439C90FF7238</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>CC07DE8CEE1D4A7DBA673011</key>
+		<key>E6BF5CF8FB38450D9C474CA5</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
@@ -839,75 +929,36 @@
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>CE4265B1F01546B98B672AB1</key>
+		<key>E6F0C24F7A6D4217A2C1369F</key>
 		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
 			<key>isa</key>
 			<string>PBXFileReference</string>
 			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
+			<string>wrapper.framework</string>
 			<key>name</key>
-			<string>MYSGravityArrowView.m</string>
+			<string>Foundation.framework</string>
 			<key>path</key>
-			<string>MYSGravityActionSheet/MYSGravityArrowView.m</string>
+			<string>Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/Foundation.framework</string>
 			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
+			<string>DEVELOPER_DIR</string>
 		</dict>
-		<key>D109690677A842578977053C</key>
-		<dict>
-			<key>fileRef</key>
-			<string>4D464DB15F704B10877C0E0B</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>D112BE87FB774DA89114FEF8</key>
-		<dict>
-			<key>fileRef</key>
-			<string>92B2975F8B7842DBB589EA7E</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>D112DCD823D24EF9B353CBEC</key>
-		<dict>
-			<key>fileRef</key>
-			<string>FBDC88FDD38A43DF9532B31A</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>D9BBA4ABDB834AD4942B0346</key>
+		<key>EAA81C2194BD4AC58E707BEC</key>
 		<dict>
 			<key>children</key>
 			<array>
-				<string>C414E9BB2B544F38AD520862</string>
-				<string>9F107026D15A48B29B78BBCC</string>
-				<string>CC07DE8CEE1D4A7DBA673011</string>
-				<string>1C0E369A11AB4BCFB47DBBA9</string>
+				<string>C78CDCAFDEA64F3E8DDDCD57</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
 			<key>name</key>
-			<string>Support Files</string>
+			<string>Frameworks</string>
 			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
+			<string>&lt;group&gt;</string>
 		</dict>
-		<key>E0F2B089B30D4A0B97449261</key>
-		<dict>
-			<key>containerPortal</key>
-			<string>31EE445C74B9478F9C5A85C0</string>
-			<key>isa</key>
-			<string>PBXContainerItemProxy</string>
-			<key>proxyType</key>
-			<string>1</string>
-			<key>remoteGlobalIDString</key>
-			<string>5CF2924BBFB640D0AE34FB79</string>
-			<key>remoteInfo</key>
-			<string>Pods-MYSGravityActionSheetDemo-MYSGravityActionSheet</string>
-		</dict>
-		<key>E2EA437576B04C39BD45B22B</key>
+		<key>ECBD6EF1F9C24053B3B054CB</key>
 		<dict>
 			<key>baseConfigurationReference</key>
-			<string>9F107026D15A48B29B78BBCC</string>
+			<string>3A490A5C07164ED6A973601C</string>
 			<key>buildSettings</key>
 			<dict>
 				<key>ALWAYS_SEARCH_USER_PATHS</key>
@@ -924,8 +975,6 @@
 				<string>0</string>
 				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
 				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>Pods-MYSGravityActionSheetDemo-MYSGravityActionSheet-prefix.pch</string>
 				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
 				<array>
 					<string>DEBUG=1</string>
@@ -955,64 +1004,15 @@
 			<key>name</key>
 			<string>Debug</string>
 		</dict>
-		<key>EAD95FFBA3D544C69A46AC25</key>
+		<key>F35987529D2C4FFC9EBFB044</key>
 		<dict>
-			<key>children</key>
-			<array>
-				<string>B70EE1E124624D08B37F324B</string>
-			</array>
+			<key>fileRef</key>
+			<string>DFF7902EC8A1459E9C4991E8</string>
 			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Frameworks</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EF07875CE70B44AC94728BC6</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>D112DCD823D24EF9B353CBEC</string>
-				<string>D109690677A842578977053C</string>
-			</array>
-			<key>isa</key>
-			<string>PBXHeadersBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>F19F3F7259B44AE1BE777D4C</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>52D0DFE890904035A5CC53D3</string>
-				<string>A0681E64A54E447C9C11FE10</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>FBDC88FDD38A43DF9532B31A</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>MYSGravityActionSheet.h</string>
-			<key>path</key>
-			<string>MYSGravityActionSheet/MYSGravityActionSheet.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
+			<string>PBXBuildFile</string>
 		</dict>
 	</dict>
 	<key>rootObject</key>
-	<string>31EE445C74B9478F9C5A85C0</string>
+	<string>67356E887F2F44FDA733D44C</string>
 </dict>
 </plist>
