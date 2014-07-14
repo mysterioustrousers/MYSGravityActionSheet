@@ -250,8 +250,39 @@ typedef void (^ActionBlock)();
     
 
     // A rect on the bottom of the superview to detect when the last visable view is leaving. Then fade the backdrop.
+    // Changes the dispatch rate as more items are added.
+    float multiplier = 1;
     if ([self.reorderedButtons count] <= 4) {
-        pushBehavior.pushDirection      = CGVectorMake(0, self.force * .3);
+        multiplier = .3;
+    }
+    else if ([self.reorderedButtons count] == 5) {
+        multiplier = .5;
+    }
+    else if ([self.reorderedButtons count] <= 7) {
+        multiplier = 1;
+    }
+    else if ([self.reorderedButtons count] <= 10) {
+        multiplier = 4;
+    }
+    else if ([self.reorderedButtons count] <= 12) {
+        multiplier = 300;
+    }
+    else if ([self.reorderedButtons count] > 12) {
+        multiplier = 10000;
+    }
+    else
+    {
+        // When there are no buttons.
+        [UIView animateWithDuration:0.3 animations:^{
+            self.backgroundColor = [UIColor clearColor];
+        }];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self removeAnimationAndView];
+            self.visible = NO;
+        });
+    }
+        pushBehavior.pushDirection      = CGVectorMake(0, self.force * multiplier);
         [self.animator addBehavior:pushBehavior];
 
         UIView *lastVisableView             = [self.reorderedButtons lastObject];
@@ -284,144 +315,6 @@ typedef void (^ActionBlock)();
         
         [self.animator addBehavior:dynamic];
     }
-    else if
-        ([self.reorderedButtons count] <= 7) {
-            pushBehavior.pushDirection      = CGVectorMake(0, self.force * 1);
-            [self.animator addBehavior:pushBehavior];
-            
-            
-            
-            UIView *lastVisableView             = [self.reorderedButtons lastObject];
-            __block BOOL isAnimatingBackDrop    = NO;
-            UIDynamicItemBehavior *dynamic      = [[UIDynamicItemBehavior alloc] initWithItems:@[lastVisableView]];
-            dynamic.action = ^{
-                for (UIDynamicBehavior *behavior in self.animator.behaviors) {
-                    for (UIView *view in [(UIPushBehavior *)behavior items]) {
-                        CGRect frameInWindow = [view.superview convertRect:view.frame toView:nil];
-                        if (CGRectIntersectsRect(frameInWindow, view.window.frame)) {
-                            return;
-                            
-                        }
-                        
-                    }
-                }
-                
-                [self.animator removeAllBehaviors];
-                
-                if (isAnimatingBackDrop) return;
-                isAnimatingBackDrop = YES;
-                
-                [UIView animateWithDuration:1 animations:^{
-                    self.backgroundColor = [UIColor clearColor];
-                } completion:^(BOOL finished) {
-                    [self removeAnimationAndView];
-                    self.visible = NO;
-                    NSString *key       = button.titleLabel.text;
-                    ActionBlock block   = self.buttonBlockDictionary[key];
-                    if (block) block();
-                }];
-            };
-            
-            [self.animator addBehavior:dynamic];
-        }
-
-    else if
-        ([self.reorderedButtons count] <= 10) {
-            pushBehavior.pushDirection      = CGVectorMake(0, self.force * 4);
-            [self.animator addBehavior:pushBehavior];
-            
-            
-            
-            UIView *lastVisableView             = [self.reorderedButtons lastObject];
-            __block BOOL isAnimatingBackDrop    = NO;
-            UIDynamicItemBehavior *dynamic      = [[UIDynamicItemBehavior alloc] initWithItems:@[lastVisableView]];
-            dynamic.action = ^{
-                for (UIDynamicBehavior *behavior in self.animator.behaviors) {
-                    for (UIView *view in [(UIPushBehavior *)behavior items]) {
-                        CGRect frameInWindow = [view.superview convertRect:view.frame toView:nil];
-                        if (CGRectIntersectsRect(frameInWindow, view.window.frame)) {
-                            return;
-                            
-                        }
-                        
-                    }
-                }
-                
-                [self.animator removeAllBehaviors];
-                
-                if (isAnimatingBackDrop) return;
-                isAnimatingBackDrop = YES;
-                
-                [UIView animateWithDuration:1 animations:^{
-                    self.backgroundColor = [UIColor clearColor];
-                } completion:^(BOOL finished) {
-                    [self removeAnimationAndView];
-                    self.visible = NO;
-                    NSString *key       = button.titleLabel.text;
-                    ActionBlock block   = self.buttonBlockDictionary[key];
-                    if (block) block();
-                }];
-            };
-            
-            [self.animator addBehavior:dynamic];
-        }
-
-    else if
-        ([self.reorderedButtons count] > 10) {
-            pushBehavior.pushDirection      = CGVectorMake(0, self.force * 100);
-            [self.animator addBehavior:pushBehavior];
-            
-            
-            
-            UIView *lastVisableView             = [self.reorderedButtons lastObject];
-            __block BOOL isAnimatingBackDrop    = NO;
-            UIDynamicItemBehavior *dynamic      = [[UIDynamicItemBehavior alloc] initWithItems:@[lastVisableView]];
-            dynamic.action = ^{
-                for (UIDynamicBehavior *behavior in self.animator.behaviors) {
-                    for (UIView *view in [(UIPushBehavior *)behavior items]) {
-                        CGRect frameInWindow = [view.superview convertRect:view.frame toView:nil];
-                        if (CGRectIntersectsRect(frameInWindow, view.window.frame)) {
-                            return;
-                            
-                        }
-                        
-                    }
-                }
-                
-                [self.animator removeAllBehaviors];
-                
-                if (isAnimatingBackDrop) return;
-                isAnimatingBackDrop = YES;
-                
-                [UIView animateWithDuration:1 animations:^{
-                    self.backgroundColor = [UIColor clearColor];
-                } completion:^(BOOL finished) {
-                    [self removeAnimationAndView];
-                    self.visible = NO;
-                    NSString *key       = button.titleLabel.text;
-                    ActionBlock block   = self.buttonBlockDictionary[key];
-                    if (block) block();
-                }];
-            };
-            
-            [self.animator addBehavior:dynamic];
-        }
-
-
-       else
-            {
-        // When there are no buttons.
-        [UIView animateWithDuration:0.3 animations:^{
-            self.backgroundColor = [UIColor clearColor];
-        }];
-        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self removeAnimationAndView];
-            self.visible = NO;
-        });
-    }
-
-}
 
 - (void)dealloc
 {
