@@ -36,6 +36,8 @@ typedef void (^ActionBlock)();
 @property (nonatomic, assign) CGFloat                 buttonHeight;
 @property (nonatomic, assign) CGFloat                 magnitude;
 @property (nonatomic, assign) CGFloat                 elasticity;
+@property (nonatomic, assign) CGFloat                 density;
+@property (nonatomic, assign) CGFloat                 angularResistance;
 @property (nonatomic, assign) CGFloat                 force;
 @property (nonatomic, assign) CGFloat                 buttonLineHeight;
 @property (nonatomic, assign) CGFloat                 separationDistance;
@@ -108,6 +110,8 @@ typedef void (^ActionBlock)();
     self.paddingBottom          = 8;
     self.paddingCancelButton    = 5;
     self.buttonHeight           = 48;
+    self.density                = .051;
+//  self.angularResistance      = 5;
     self.magnitude              = 3.0;
     self.elasticity             = 0.55;
     self.force                  = PAD ? -200 : -100; // applies force to items above selected item
@@ -243,11 +247,47 @@ typedef void (^ActionBlock)();
     }
 
     UIPushBehavior *pushBehavior    = [[UIPushBehavior alloc] initWithItems:@[[self.buttons firstObject]] mode:UIPushBehaviorModeContinuous];
-    pushBehavior.pushDirection      = CGVectorMake(0, self.force * 5);
-    [self.animator addBehavior:pushBehavior];
+    
 
     // A rect on the bottom of the superview to detect when the last visable view is leaving. Then fade the backdrop.
-    if ([self.reorderedButtons count] > 0) {
+    // Changes the dispatch rate as more items are added.
+    float multiplier = 1;
+    if ([self.reorderedButtons count] <= 2) {
+        multiplier = .1;
+    }
+    else if ([self.reorderedButtons count] == 4) {
+        multiplier = .3;
+    }
+    else if ([self.reorderedButtons count] == 5) {
+        multiplier = .5;
+    }
+    else if ([self.reorderedButtons count] <= 7) {
+        multiplier = 1;
+    }
+    else if ([self.reorderedButtons count] <= 10) {
+        multiplier = 3;
+    }
+    else if ([self.reorderedButtons count] <= 12) {
+        multiplier = 100;
+    }
+    else if ([self.reorderedButtons count] > 12) {
+        multiplier = 500;
+    }
+    else
+    {
+        // When there are no buttons.
+        [UIView animateWithDuration:0.3 animations:^{
+            self.backgroundColor = [UIColor clearColor];
+        }];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self removeAnimationAndView];
+            self.visible = NO;
+        });
+    }
+        pushBehavior.pushDirection      = CGVectorMake(0, self.force * multiplier);
+        [self.animator addBehavior:pushBehavior];
+
         UIView *lastVisableView             = [self.reorderedButtons lastObject];
         __block BOOL isAnimatingBackDrop    = NO;
         UIDynamicItemBehavior *dynamic      = [[UIDynamicItemBehavior alloc] initWithItems:@[lastVisableView]];
@@ -278,18 +318,6 @@ typedef void (^ActionBlock)();
         
         [self.animator addBehavior:dynamic];
     }
-    else {
-        // When there are no buttons.
-        [UIView animateWithDuration:0.3 animations:^{
-            self.backgroundColor = [UIColor clearColor];
-        }];
-        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self removeAnimationAndView];
-            self.visible = NO;
-        });
-    }
-}
 
 - (void)dealloc
 {
@@ -634,6 +662,8 @@ typedef void (^ActionBlock)();
     // Make 'em bounce
     UIDynamicItemBehavior *itemBehaviour    = [[UIDynamicItemBehavior alloc] initWithItems:items];
     itemBehaviour.elasticity                = self.elasticity;
+    itemBehaviour.density                   = self.density;
+    itemBehaviour.angularResistance         = self.angularResistance;
     itemBehaviour.allowsRotation            = NO;
     [self.animator addBehavior:itemBehaviour];
 }
@@ -669,17 +699,29 @@ typedef void (^ActionBlock)();
                                          toPoint:bottomRightCorner];
             [animator addBehavior:collision];
         }
-        else if (idx < [items count] - 1) {
-            UIView *nextView = items[idx + 1];
+        else if (idx < [items count] - 2) {
+            UIView *nextView = items[idx + 2];
             UIAttachmentBehavior *attachmentBehavior = [[UIAttachmentBehavior alloc] initWithItem:view attachedToItem:nextView];
             attachmentBehavior.length    = 0;
             attachmentBehavior.frequency = 9;
             attachmentBehavior.damping   = 2;
             [animator addBehavior:attachmentBehavior];
 
-//            UIDynamicItemBehavior *resistanceBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[view]];
-//            resistanceBehavior.resistance = 4;
-//            [animator addBehavior:resistanceBehavior];
+            UIDynamicItemBehavior *resistanceBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[view]];
+            resistanceBehavior.resistance = 15;
+            [animator addBehavior:resistanceBehavior];
+        }
+        else if (idx <= [items count] - 1) {
+            UIView *nextView = items[idx + 1];
+            UIAttachmentBehavior *attachmentBehavior = [[UIAttachmentBehavior alloc] initWithItem:view attachedToItem:nextView];
+            attachmentBehavior.length    = 0;
+            attachmentBehavior.frequency = 9;
+            attachmentBehavior.damping   = 2;
+            [animator addBehavior:attachmentBehavior];
+            
+            UIDynamicItemBehavior *resistanceBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[view]];
+            resistanceBehavior.resistance = 4;
+            [animator addBehavior:resistanceBehavior];
         }
     }];
 }
