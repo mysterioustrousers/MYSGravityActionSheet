@@ -252,7 +252,10 @@ typedef void (^ActionBlock)();
     // A rect on the bottom of the superview to detect when the last visable view is leaving. Then fade the backdrop.
     // Changes the dispatch rate as more items are added.
     float multiplier = 1;
-    if ([self.reorderedButtons count] <= 4) {
+    if ([self.reorderedButtons count] <= 2) {
+        multiplier = .1;
+    }
+    else if ([self.reorderedButtons count] == 4) {
         multiplier = .3;
     }
     else if ([self.reorderedButtons count] == 5) {
@@ -262,13 +265,13 @@ typedef void (^ActionBlock)();
         multiplier = 1;
     }
     else if ([self.reorderedButtons count] <= 10) {
-        multiplier = 4;
+        multiplier = 3;
     }
     else if ([self.reorderedButtons count] <= 12) {
-        multiplier = 300;
+        multiplier = 100;
     }
     else if ([self.reorderedButtons count] > 12) {
-        multiplier = 10000;
+        multiplier = 500;
     }
     else
     {
@@ -706,6 +709,18 @@ typedef void (^ActionBlock)();
 
             UIDynamicItemBehavior *resistanceBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[view]];
             resistanceBehavior.resistance = 15;
+            [animator addBehavior:resistanceBehavior];
+        }
+        else if (idx <= [items count] - 1) {
+            UIView *nextView = items[idx + 1];
+            UIAttachmentBehavior *attachmentBehavior = [[UIAttachmentBehavior alloc] initWithItem:view attachedToItem:nextView];
+            attachmentBehavior.length    = 0;
+            attachmentBehavior.frequency = 9;
+            attachmentBehavior.damping   = 2;
+            [animator addBehavior:attachmentBehavior];
+            
+            UIDynamicItemBehavior *resistanceBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[view]];
+            resistanceBehavior.resistance = 4;
             [animator addBehavior:resistanceBehavior];
         }
     }];
