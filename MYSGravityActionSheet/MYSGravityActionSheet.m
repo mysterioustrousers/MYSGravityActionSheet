@@ -688,7 +688,7 @@ typedef void (^ActionBlock)();
     [animator addBehavior:collision];
 
     [items enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
-        /*if (idx == [items count] - 1) {
+        if (idx == [items count] - 1) {
 //            CGPoint p = CGPointMake(CGRectGetMidX(bounds), 50);
             UICollisionBehavior *collision = [[UICollisionBehavior alloc] initWithItems:@[view]];
             CGPoint bottomLeftCorner       = CGPointMake(CGRectGetMinX(bounds), (CGRectGetMinY(bounds) +
@@ -724,46 +724,10 @@ typedef void (^ActionBlock)();
             [animator addBehavior:resistanceBehavior];
         }
     }];
-} */
-// there were four spaces been the last } and the #pragma #selfnote
- 
- int idxINT = 1;
- int resistanceINT = 1;
- if (idx == [items count] - 1) {
- idxINT = 1;
- resistanceINT = 4;
- }
- else if (idx == [items count] - 2) {
- idxINT = 2;
- resistanceINT = 14;
- }
- //            CGPoint p = CGPointMake(CGRectGetMidX(bounds), 50);
- UICollisionBehavior *collision = [[UICollisionBehavior alloc] initWithItems:@[view]];
- CGPoint bottomLeftCorner       = CGPointMake(CGRectGetMinX(bounds), (CGRectGetMinY(bounds) +
- (self.popover ? 10 : view.frame.size.height) + 30));
- CGPoint bottomRightCorner      = CGPointMake(CGRectGetMaxX(bounds), bottomLeftCorner.y);
- [collision addBoundaryWithIdentifier:@"floor"
- fromPoint:bottomLeftCorner
- toPoint:bottomRightCorner];
- [animator addBehavior:collision];
- 
-  
- UIView *nextView = items[idx + idxINT];
- UIAttachmentBehavior *attachmentBehavior = [[UIAttachmentBehavior alloc] initWithItem:view attachedToItem:nextView];
- attachmentBehavior.length    = 0;
- attachmentBehavior.frequency = 9;
- attachmentBehavior.damping   = 2;
- [animator addBehavior:attachmentBehavior];
- 
- UIDynamicItemBehavior *resistanceBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[view]];
- resistanceBehavior.resistance = resistanceINT;
- [animator addBehavior:resistanceBehavior];
- 
-    }
-    
- 
-     ];
 }
+
+
+
 
 #pragma mark - UIDynamicAnimatorDelegate
 
